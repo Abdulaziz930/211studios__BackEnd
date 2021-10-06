@@ -1,3 +1,7 @@
+using Business.Abstract;
+using Common;
+using DataAccess.Abstract;
+using DataAccess.AutoMapper;
 using DataAccess.Concret;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +35,19 @@ namespace AdminPanel
                 options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]);
 
             });
+
+            #endregion
+
+            #region Scoped
+
+            services.RegisterAllTypes(ServiceLifetime.Scoped, typeof(ISliderDal));
+            services.RegisterAllTypes(ServiceLifetime.Scoped, typeof(ISliderService));
+
+            #endregion
+
+            #region AutoMapper
+
+            services.AddAutoMapper(typeof(AutoMapperProfile));
 
             #endregion
 
