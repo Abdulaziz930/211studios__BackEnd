@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Utils.Interfaces;
 
 namespace _211_Studios.Controllers
 {
@@ -16,21 +17,31 @@ namespace _211_Studios.Controllers
     {
         private readonly ISliderService _sliderService;
         private readonly IMapper _mapper;
+        private readonly ILoggerManager _loggerManager;
 
-        public HomeController(ISliderService sliderService, IMapper mapper)
+        public HomeController(ISliderService sliderService, IMapper mapper, ILoggerManager loggerManager)
         {
             _sliderService = sliderService;
             _mapper = mapper;
+            _loggerManager = loggerManager;
         }
 
         [HttpGet("getSliders")]
         public async Task<IActionResult> GetSliders()
         {
-            var sliders = await _sliderService.GetSlidersAsync();
+            try
+            {
+                var sliders = await _sliderService.GetSlidersAsync();
 
-            var slidersDto = _mapper.Map<List<SliderDto>>(sliders);
+                var slidersDto = _mapper.Map<List<SliderDto>>(sliders);
 
-            return Ok(slidersDto);
+                return Ok(slidersDto);
+            }
+            catch (Exception e)
+            {
+                _loggerManager.LogError($"Something went wrong in the {nameof(GetSliders)} action {e}");
+                return StatusCode(500, "Internal server error");
+            }
         }
     }
 }
