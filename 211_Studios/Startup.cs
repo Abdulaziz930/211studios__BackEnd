@@ -15,10 +15,13 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+using NLog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Utils;
 
 namespace _211_Studios
 {
@@ -26,6 +29,7 @@ namespace _211_Studios
     {
         public Startup(IConfiguration configuration)
         {
+            LogManager.LoadConfiguration(Path.Combine(Directory.GetCurrentDirectory(), "nlog.config"));
             Configuration = configuration;
         }
 
@@ -67,6 +71,12 @@ namespace _211_Studios
                                             .AllowAnyMethod();
                     });
             });
+
+            #endregion
+
+            #region Logger
+
+            services.ConfigureLoggerService();
 
             #endregion
 
