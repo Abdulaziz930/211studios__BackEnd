@@ -22,5 +22,13 @@ namespace DataAccess.Concret
 
 
         public DbSet<Slider> Sliders { get; set; }
+
+        public DbSet<Game> Games { get; set; }
+
+        public DbSet<GameDetail> GameDetails { get; set; }
+
+        public DbSet<Category> Categories { get; set; }
+
+        public DbSet<GameCategory> GameCategories { get; set; }
     }
 }

@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewData["Title"] = "Sliders";
+    List<SliderViewModel> slidersVM = Model;
+}
+
+<div class="section-header">
+    <h1>Sliders</h1>
+</div>
+<div class="section-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    @if (slidersVM.Count == 0 || slidersVM == null)
+                    {
+                        <div class="alert alert-warning">There are no slider item yet, please add slider item</div>
+                    }
+                    else
+                    {
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Image</th>
+                                    <th scope="col">Title</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var slider in slidersVM)
+                                {
+                                    <tr>
+                                        <td>
+                                            <img src="~/images/@slider.Image" class="img-fluid rounded-circle mt-3" style="width: 100px; height: 100px;" />
+                                        </td>
+                                        <td>@slider.Title</td>
+                                        <td>
+                                            <a asp-action="Detail" asp-route-id="@slider.Id" class="btn btn-success">Detail</a>
+                                            <a asp-action="Update" asp-route-id="@slider.Id" class="btn btn-warning">Update</a>
+                                            <a asp-action="Delete" asp-route-id="@slider.Id" class="btn btn-danger">Delete</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

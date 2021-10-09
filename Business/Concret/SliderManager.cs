@@ -42,6 +42,11 @@ namespace Business.Concret
             return await _sliderDal.GetAllAsync(x => x.IsDeleted == false);
         }
 
+        public async Task<List<Slider>> GetSlidersAsync(int skipCount, int takeCount)
+        {
+            return await _sliderDal.GetSlidersBySkipAndTakeCount(skipCount, takeCount);
+        }
+
         public async Task<bool> UpdateAsync(Slider slider)
         {
             await _sliderDal.UpdateAsync(slider);

@@ -12,19 +12,23 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Utils;
 
 namespace AdminPanel
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            _environment = environment;
         }
 
         public IConfiguration Configuration { get; }
+        private readonly IWebHostEnvironment _environment;
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -56,6 +60,12 @@ namespace AdminPanel
             services.AddControllersWithViews();
 
             #endregion
+
+            #region Constants
+
+            Constants.ImageFolderPath = Path.Combine(_environment.WebRootPath, "images");
+
+            #endregion
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -81,7 +91,7 @@ namespace AdminPanel
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Dashboard}/{action=Index}/{id?}");
             });
         }
     }

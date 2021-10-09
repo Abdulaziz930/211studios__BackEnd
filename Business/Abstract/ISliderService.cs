@@ -13,6 +13,8 @@ namespace Business.Abstract
 
         Task<List<Slider>> GetSlidersAsync();
 
+        Task<List<Slider>> GetSlidersAsync(int skipCount, int takeCount);
+
         Task<bool> AddAsync(Slider slider);
 
         Task<bool> UpdateAsync(Slider slider);
