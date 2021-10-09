@@ -14,6 +14,12 @@ namespace DataAccess.AutoMapper
         public AutoMapperProfile()
         {
             CreateMap<Slider, SliderDto>().ReverseMap();
+
+            CreateMap<Game, GameDto>().ReverseMap();
+
+            CreateMap<GameDetail, GameDetailDto>().ReverseMap();
+            
+            CreateMap<Category, CategoryDto>().ReverseMap();   
         }
     }
 }
