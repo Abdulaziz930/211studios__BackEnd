@@ -91,5 +91,24 @@ namespace AdminPanel.Controllers
         }
 
         #endregion
+
+        public async Task<IActionResult> Detail(int? id)
+        {
+            if (id is null)
+                return BadRequest();
+
+            var slider = await _sliderService.GetSliderAsync(id.Value);
+            if (slider is null)
+                return NotFound();
+
+            var sliderVM = new SliderViewModel
+            {
+                Id = slider.Id,
+                Title = slider.Title,
+                Image = slider.Image
+            };
+
+            return View(sliderVM);
+        }
     }
 }
