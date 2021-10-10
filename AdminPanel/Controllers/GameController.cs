@@ -15,11 +15,14 @@ namespace AdminPanel.Controllers
     {
         private readonly IGameService _gameService;
         private readonly ICategoryService _categoryService;
+        private readonly IPlatformService _platformService;
 
-        public GameController(IGameService gameService, ICategoryService categoryService)
+        public GameController(IGameService gameService, ICategoryService categoryService
+            , IPlatformService platformService)
         {
             _gameService = gameService;
             _categoryService = categoryService;
+            _platformService = platformService;
         }
 
         public async Task<IActionResult> Index(int page = 1)
@@ -60,15 +63,21 @@ namespace AdminPanel.Controllers
             var categories = await _categoryService.GetCategoriesAsync();
             ViewBag.Categories = categories;
 
+            var platforms = await _platformService.GetPlatformsAsync();
+            ViewBag.Platforms = platforms;
+
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Game game, List<int> categoriesId)
+        public async Task<IActionResult> Create(Game game, List<int> categoriesId, List<int> platformsId)
         {
             var categories = await _categoryService.GetCategoriesAsync();
             ViewBag.Categories = categories;
+
+            var platforms = await _platformService.GetPlatformsAsync();
+            ViewBag.Platforms = platforms;
 
             if (game.Photo == null)
             {
@@ -123,6 +132,18 @@ namespace AdminPanel.Controllers
                     return BadRequest();
             }
 
+            if (platformsId.Count == 0 || platformsId == null)
+            {
+                ModelState.AddModelError("", "Please select platform.");
+                return View();
+            }
+
+            foreach (var item in platformsId)
+            {
+                if (platforms.All(x => x.Id != item))
+                    return BadRequest();
+            }
+
             var gameCategoryList = new List<GameCategory>();
             foreach (var item in categoriesId)
             {
@@ -133,7 +154,20 @@ namespace AdminPanel.Controllers
                 };
                 gameCategoryList.Add(gameCategory);
             }
+
+            var gameDetailPlatformList = new List<GameDetailPlatform>();
+            foreach (var item in platformsId)
+            {
+                var gameDetailPlatform = new GameDetailPlatform
+                {
+                    GameDetailId = game.GameDetail.Id,
+                    PlatformId = item
+                };
+                gameDetailPlatformList.Add(gameDetailPlatform);
+            }
+
             game.GameCategories = gameCategoryList;
+            game.GameDetail.GameDetailPlatforms = gameDetailPlatformList;
 
             game.GameDetail.CreationDate = DateTime.UtcNow;
             game.GameDetail.LastModificationDate = DateTime.UtcNow;
