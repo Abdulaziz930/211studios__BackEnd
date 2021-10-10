@@ -92,6 +92,8 @@ namespace AdminPanel.Controllers
 
         #endregion
 
+        #region Detail
+
         public async Task<IActionResult> Detail(int? id)
         {
             if (id is null)
@@ -110,5 +112,7 @@ namespace AdminPanel.Controllers
 
             return View(sliderVM);
         }
+
+        #endregion
     }
 }
