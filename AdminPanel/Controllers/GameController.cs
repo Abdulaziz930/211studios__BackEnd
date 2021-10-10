@@ -259,7 +259,6 @@ namespace AdminPanel.Controllers
             dbGame.Image = imageFileName;
             dbGame.GameDetail.GameLink = game.GameDetail.GameLink;
             dbGame.GameDetail.Size = game.GameDetail.Size;
-            dbGame.GameDetail.Platform = game.GameDetail.Platform;
             dbGame.GameDetail.Video = videoFileName;
 
             await _gameService.UpdateAsync(dbGame);
@@ -297,7 +296,6 @@ namespace AdminPanel.Controllers
                 Image = game.Image,
                 Video = game.GameDetail.Video,
                 Size = game.GameDetail.Size,
-                Platform = game.GameDetail.Platform,
                 GameLink = game.GameDetail.GameLink,
                 CreationDate = game.GameDetail.CreationDate,
                 LastModificationDate = game.GameDetail.LastModificationDate,
@@ -370,7 +368,6 @@ namespace AdminPanel.Controllers
                 Image = game.Image,
                 Video = game.GameDetail.Video,
                 Size = game.GameDetail.Size,
-                Platform = game.GameDetail.Platform,
                 GameLink = game.GameDetail.GameLink,
                 CreationDate = game.GameDetail.CreationDate,
                 LastModificationDate = game.GameDetail.LastModificationDate,
