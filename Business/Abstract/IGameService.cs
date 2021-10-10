@@ -21,6 +21,8 @@ namespace Business.Abstract
 
         Task<bool> AddAsync(Game game);
 
+        Task<bool> AddRangeAsync(Game game, GameDetail gameDetail);
+
         Task<bool> UpdateAsync(Game game);
 
         Task<bool> DeleteAsync(int id);

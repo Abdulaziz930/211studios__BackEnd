@@ -22,7 +22,7 @@ namespace DataAccess.Concret
             return await Context.Games.Include(x => x.GameDetail).Include(x => x.GameCategories).ThenInclude(x => x.Category)
                 .Where(x => x.IsDeleted == false && x.GameCategories.Any(x => x.Category.IsDeleted == false))
                 .OrderByDescending(x => x.GameDetail.LastModificationDate)
-                .Skip(skipCount).Take(skipCount).ToListAsync();
+                .Skip(skipCount).Take(takeCount).ToListAsync();
         }
 
         public async Task<List<Game>> GetGamesByTakeCountAsync(int takeCount)
@@ -39,6 +39,24 @@ namespace DataAccess.Concret
                 .Include(x => x.GameCategories).ThenInclude(x => x.Category)
                 .FirstOrDefaultAsync(x => x.IsDeleted == false && x.Id == id 
                                     && x.GameCategories.Any(x => x.Category.IsDeleted == false && x.GameId == id));
+        }
+
+        public async Task<bool> AddRangeAsync(Game game, GameDetail gameDetail)
+        {
+            await using var dbContextTransaction = await Context.Database.BeginTransactionAsync();
+            try
+            {
+                await Context.AddRangeAsync(game, gameDetail);
+                await Context.SaveChangesAsync();
+                await dbContextTransaction.CommitAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                await dbContextTransaction.RollbackAsync();
+                throw;
+            }
         }
     }
 }

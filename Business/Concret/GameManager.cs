@@ -25,6 +25,13 @@ namespace Business.Concret
             return true;
         }
 
+        public async Task<bool> AddRangeAsync(Game game, GameDetail gameDetail)
+        {
+            await _gameDal.AddRangeAsync(game, gameDetail);
+
+            return true;
+        }
+
         public async Task<bool> DeleteAsync(int id)
         {
             await _gameDal.DeleteAsync(new Game { Id = id });
