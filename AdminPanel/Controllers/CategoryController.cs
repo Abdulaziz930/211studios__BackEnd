@@ -1,5 +1,6 @@
 ﻿using AdminPanel.ViewModels;
 using Business.Abstract;
+using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -43,5 +44,139 @@ namespace AdminPanel.Controllers
 
             return View(categoriesVM);
         }
+
+        #region Create
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Category category)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(category);
+            }
+
+            await _categoryService.AddAsync(category);
+
+            return RedirectToAction("Index");
+        }
+
+        #endregion
+
+        #region Update
+
+        public async Task<IActionResult> Update(int? id)
+        {
+            if (id is null)
+                return BadRequest();
+
+            var category = await _categoryService.GetCategoryAsync(id.Value);
+            if (category is null)
+                return NotFound();
+
+            var categoryVM = new CategoryViewModel
+            {
+                Id = category.Id,
+                Name = category.Name
+            };
+
+            return View(categoryVM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(int? id, CategoryViewModel categoryVM)
+        {
+            if (id is null)
+                return BadRequest();
+
+            if (categoryVM.Id != id)
+                return BadRequest();
+
+            var category = await _categoryService.GetCategoryAsync(id.Value);
+            if (category is null)
+                return NotFound();
+
+            if (!ModelState.IsValid)
+            {
+                return View(categoryVM);
+            }
+
+            category.Name = categoryVM.Name;
+
+            await _categoryService.UpdateAsync(category);
+
+            return RedirectToAction("Index");
+        }
+
+        #endregion
+
+        #region Delete
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id is null)
+                return BadRequest();
+
+            var category = await _categoryService.GetCategoryAsync(id.Value);
+            if (category is null)
+                return NotFound();
+
+            var categoryVM = new CategoryViewModel
+            {
+                Id = category.Id,
+                Name = category.Name
+            };
+
+            return View(categoryVM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName("Delete")]
+        public async Task<IActionResult> DeleteSlider(int? id)
+        {
+            if (id is null)
+                return BadRequest();
+
+            var category = await _categoryService.GetCategoryAsync(id.Value);
+            if (category is null)
+                return NotFound();
+
+            category.IsDeleted = true;
+
+            await _categoryService.UpdateAsync(category);
+
+            return RedirectToAction("Index");
+        }
+
+        #endregion
+
+        #region Detail
+
+        public async Task<IActionResult> Detail(int? id)
+        {
+            if (id is null)
+                return BadRequest();
+
+            var category = await _categoryService.GetCategoryAsync(id.Value);
+            if (category is null)
+                return NotFound();
+
+            var categoryVM = new CategoryViewModel
+            {
+                Id = category.Id,
+                Name = category.Name
+            };
+
+            return View(categoryVM);
+        }
+
+        #endregion
     }
 }

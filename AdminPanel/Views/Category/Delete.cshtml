@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewData["Title"] = "Delete category";
+    CategoryViewModel category = Model;
+}
+
+<div class="section-header">
+    <h1>Delete category</h1>
+</div>
+<div class="section-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="container">
+                    <div class="detail-content" style="padding-top: 20px; padding-bottom: 20px;">
+                        <h4>Name:</h4>
+                        <p>@category.Name</p>
+                    </div>
+                    <div class="card-footer text-right">
+                        <form method="post">
+                            <button class="btn btn-danger">Delete</button>
+                            <a asp-action="index" class="btn btn-info">Cancle</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

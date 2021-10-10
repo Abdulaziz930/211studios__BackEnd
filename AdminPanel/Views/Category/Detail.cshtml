@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewData["Title"] = "Category detail";
+    CategoryViewModel categoryVM = Model;
+}
+
+<div class="section-header">
+    <h1>Category detail</h1>
+</div>
+<div class="section-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="container">
+                    <div class="detail-content" style="padding-top: 20px; padding-bottom: 20px;">
+                        <h4>Name:</h4>
+                        <p>@categoryVM.Name</p>
+                    </div>
+                    <div class="card-footer text-right">
+                        <a asp-action="index" class="btn btn-info"><i class="fas fa-arrow-left"></i> Back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
