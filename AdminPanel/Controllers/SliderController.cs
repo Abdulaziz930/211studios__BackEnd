@@ -162,6 +162,48 @@ namespace AdminPanel.Controllers
 
         #endregion
 
+        #region Delete
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id is null)
+                return BadRequest();
+
+            var slider = await _sliderService.GetSliderAsync(id.Value);
+            if (slider is null)
+                return NotFound();
+
+            var sliderVM = new SliderViewModel
+            {
+                Id = slider.Id,
+                Title = slider.Title,
+                Image = slider.Image
+            };
+
+            return View(sliderVM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName("Delete")]
+        public async Task<IActionResult> DeleteSlider(int? id)
+        {
+            if (id is null)
+                return BadRequest();
+
+            var slider = await _sliderService.GetSliderAsync(id.Value);
+            if (slider is null)
+                return NotFound();
+
+            slider.IsDeleted = true;
+
+            await _sliderService.UpdateAsync(slider);
+
+            return RedirectToAction("Index");
+        }
+
+        #endregion
+
         #region Detail
 
         public async Task<IActionResult> Detail(int? id)
