@@ -28,6 +28,7 @@
     <!-- Template CSS -->
     <link rel="stylesheet" href="~/assets/css/style.css" />
     <link rel="stylesheet" href="~/assets/css/components.css" />
+    <link rel="stylesheet" href="~/assets/css/myStyle.css" />
 </head>
 
 <body>
@@ -129,16 +130,13 @@
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
-                            <a href="#" class="nav-link has-dropdown"><i class="far fa-file-alt"></i> <span>Forms</span></a>
+                            <a href="#" class="nav-link has-dropdown"><i class="fab fa-delicious"></i> <span>Platforms</span></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a class="nav-link" href="forms-advanced-form.html">Advanced Form</a>
+                                    <a class="nav-link" asp-controller="Platform" asp-action="Index">All platforms</a>
                                 </li>
                                 <li>
-                                    <a class="nav-link" href="forms-editor.html">Editor</a>
-                                </li>
-                                <li>
-                                    <a class="nav-link" href="forms-validation.html">Validation</a>
+                                    <a class="nav-link" asp-controller="Platform" asp-action="Create">Add new platform</a>
                                 </li>
                             </ul>
                         </li>

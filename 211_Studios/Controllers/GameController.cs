@@ -77,7 +77,6 @@ namespace _211_Studios.Controllers
                     CreationDate = game.GameDetail.CreationDate,
                     LastModificationDate = game.GameDetail.LastModificationDate,
                     Size = game.GameDetail.Size,
-                    Platform = game.GameDetail.Platform,
                     GameLink = game.GameDetail.GameLink,
                     Categories = categoriesDto
                 };

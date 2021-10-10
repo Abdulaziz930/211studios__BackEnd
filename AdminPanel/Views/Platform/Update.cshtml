@@ -1,0 +1,39 @@
+﻿@model PlatformDetailViewModel
+@{
+    ViewData["Title"] = "Update platform type";
+}
+
+<div class="section-header">
+    <h1>Update platform type</h1>
+</div>
+<div class="section-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label asp-for="Name">Name</label>
+                            <input asp-for="Name" class="form-control" placeholder="Name">
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Logo">Icon</label>
+                            <input asp-for="Logo" class="form-control" placeholder="Icon">
+                            <span asp-validation-for="Logo" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="card-footer text-right">
+                        <button class="btn btn-warning">Update</button>
+                        <a asp-action="index" class="btn btn-info">Cancle</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
+

@@ -65,6 +65,8 @@ namespace AdminPanel
 
             Constants.ImageFolderPath = Path.Combine(_environment.WebRootPath, "images");
 
+            Constants.VideoFolderPath = Path.Combine(_environment.WebRootPath, "videos");
+
             #endregion
         }
 

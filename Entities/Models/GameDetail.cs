@@ -24,9 +24,6 @@ namespace Entities.Models
         public string Size { get; set; }
 
         [Required]
-        public string Platform { get; set; }
-
-        [Required]
         public string GameLink { get; set; }
 
         [NotMapped]
@@ -36,5 +33,7 @@ namespace Entities.Models
         public int GameId { get; set; }
 
         public Game Game { get; set; }
+
+        public ICollection<GameDetailPlatform> GameDetailPlatforms { get; set; }
     }
 }

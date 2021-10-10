@@ -1,0 +1,76 @@
+﻿@model Game
+@{
+    ViewData["Title"] = "Add new game";
+}
+
+<div class="section-header">
+    <h1>Add new game</h1>
+</div>
+<div class="section-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <form method="post" enctype="multipart/form-data">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label asp-for="Name">Title</label>
+                            <input asp-for="Name" class="form-control" placeholder="Name">
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Description">Description</label>
+                            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Description"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="GameDetail.Size">Size</label>
+                            <input asp-for="GameDetail.Size" class="form-control" placeholder="Size">
+                            <span asp-validation-for="GameDetail.Size" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="GameDetail.GameLink">Game link</label>
+                            <input asp-for="GameDetail.GameLink" class="form-control" placeholder="Game link">
+                            <span asp-validation-for="GameDetail.GameLink" class="text-danger"></span>
+                        </div>
+                        <div class="form-group" id="categoriesInput">
+                            <label>Categories</label>
+                            <select class="form-control" name="CategoriesId" id="categories" multiple>
+                                @foreach (Category item in ViewBag.Categories)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Photo">Image</label>
+                            <input asp-for="Photo" class="form-control" accept="image/*" type="file">
+                            <span asp-validation-for="Photo" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="GameDetail.VideoFile">Video</label>
+                            <input asp-for="GameDetail.VideoFile" class="form-control" accept="video/mp4,video/x-m4v,video/*" type="file">
+                            <span asp-validation-for="GameDetail.VideoFile" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="card-footer text-right">
+                        <button class="btn btn-primary">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdn.ckeditor.com/ckeditor5/27.1.0/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#Description'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+}
+

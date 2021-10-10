@@ -30,5 +30,9 @@ namespace DataAccess.Concret
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<GameCategory> GameCategories { get; set; }
+
+        public DbSet<Platform> Platforms { get; set; }
+
+        public DbSet<GameDetailPlatform> GameDetailPlatforms { get; set; }
     }
 }

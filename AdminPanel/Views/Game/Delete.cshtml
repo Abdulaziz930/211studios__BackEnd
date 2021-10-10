@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewData["Title"] = "Delete game";
+    GameDetailViewModel gameDetail = Model;
+}
+
+<div class="section-header">
+    <h1>Delete game</h1>
+</div>
+<div class="section-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="container">
+                    <div class="detail-content" style="padding-top: 20px; padding-bottom: 20px;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="img-box">
+                                    <img src="~/images/@gameDetail.Image" class="img-fluid" />
+                                </div>
+                                <div class="video-box mt-3">
+                                    <video style="max-width: 100%" controls>
+                                        <source src="~/Videos/@gameDetail.Video" id="video-file" type="video/mp4">
+                                    </video>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card-item">
+                                    <h4>Name:</h4>
+                                    <p>@gameDetail.Name</p>
+                                </div>
+                                <div class="card-item">
+                                    <h4>Description:</h4>
+                                    <p>@Html.Raw(gameDetail.Description)</p>
+                                </div>
+                                <div class="card-item">
+                                    <h4>Size:</h4>
+                                    <p>@gameDetail.Size</p>
+                                </div>
+                                <div class="card-item">
+                                    <h4>Game link:</h4>
+                                    <a href="@gameDetail.GameLink">@gameDetail.GameLink</a>
+                                </div>
+                                <div class="card-item">
+                                    <h4>Categories:</h4>
+                                    <ul>
+                                        @foreach (var category in gameDetail.Categories)
+                                        {
+                                            <li>@category</li>
+                                        }
+                                    </ul>
+                                </div>
+                                <div class="card-item">
+                                    <h4>Creation date:</h4>
+                                    <p>@gameDetail.CreationDate.ToString("dd/MM/yyy hh/mm/ss")</p>
+                                </div>
+                                <div class="card-item">
+                                    <h4>Last modification date:</h4>
+                                    <p>@gameDetail.LastModificationDate.ToString("dd/MM/yyy hh/mm/ss")</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-right">
+                        <form method="post">
+                            <button class="btn btn-danger">Delete</button>
+                            <a asp-action="index" class="btn btn-info">Cancle</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

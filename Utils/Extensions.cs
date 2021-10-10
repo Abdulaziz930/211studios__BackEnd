@@ -19,6 +19,11 @@ namespace Utils
             return formFile.ContentType.Contains("image/");
         }
 
+        public static bool IsVideo(this IFormFile formFile)
+        {
+            return formFile.ContentType.Contains("video/");
+        }
+
         public static bool IsSizeAllowed(this IFormFile formFile, int kb)
         {
             return formFile.Length < kb * 1000;

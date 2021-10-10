@@ -15,5 +15,7 @@ namespace DataAccess.Abstract
         Task<List<Game>> GetGamesBySkipAndTakeCountAsync(int skipCount, int takeCount);
 
         Task<Game> GetGameWithIncludeAsync(int id);
+
+        Task<bool> AddRangeAsync(Game game, GameDetail gameDetail);
     }
 }
