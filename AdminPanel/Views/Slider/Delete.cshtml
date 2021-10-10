@@ -1,11 +1,11 @@
 ﻿
 @{
-    ViewData["Title"] = "Slider item detail";
-    SliderViewModel sliderVM = Model;
+    ViewData["Title"] = "Delete slider item";
+    SliderViewModel slider = Model;
 }
 
 <div class="section-header">
-    <h1>Slider item's detail</h1>
+    <h1>Delete slider item</h1>
 </div>
 <div class="section-body">
     <div class="row">
@@ -15,16 +15,19 @@
                     <div class="detail-content" style="padding-top: 20px; padding-bottom: 20px;">
                         <div class="row">
                             <div class="col-md-6">
-                                <img src="~/images/@sliderVM.Image" class="img-fluid" />
+                                <img src="~/images/@slider.Image" class="img-fluid" />
                             </div>
                             <div class="col-md-6">
                                 <h4>Title:</h4>
-                                <p>@sliderVM.Title</p>
+                                <p>@slider.Title</p>
                             </div>
                         </div>
                     </div>
                     <div class="card-footer text-right">
-                        <a asp-action="index" class="btn btn-info"><i class="fas fa-arrow-left"></i> Back</a>
+                        <form method="post">
+                            <button class="btn btn-danger">Delete</button>
+                            <a asp-action="index" class="btn btn-info">Cancle</a>
+                        </form>
                     </div>
                 </div>
             </div>
