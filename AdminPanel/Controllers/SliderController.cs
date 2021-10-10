@@ -197,6 +197,13 @@ namespace AdminPanel.Controllers
 
             slider.IsDeleted = true;
 
+            var path = Path.Combine(Constants.ImageFolderPath, slider.Image);
+
+            if (System.IO.File.Exists(path))
+            {
+                System.IO.File.Delete(path);
+            }
+
             await _sliderService.UpdateAsync(slider);
 
             return RedirectToAction("Index");
