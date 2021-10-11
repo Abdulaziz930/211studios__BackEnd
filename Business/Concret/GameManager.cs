@@ -4,6 +4,7 @@ using Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,6 +31,11 @@ namespace Business.Concret
             await _gameDal.AddRangeAsync(game, gameDetail);
 
             return true;
+        }
+
+        public async Task<bool> CheckGameAsync(Expression<Func<Game, bool>> filter)
+        {
+            return await _gameDal.CheckGameAsync(filter);
         }
 
         public async Task<bool> DeleteAsync(int id)

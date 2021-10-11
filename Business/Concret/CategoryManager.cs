@@ -4,6 +4,7 @@ using Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,6 +24,11 @@ namespace Business.Concret
             await _categoryDal.AddAsync(category);
 
             return true;
+        }
+
+        public async Task<bool> CheckCategoryAsync(Expression<Func<Category, bool>> filter)
+        {
+            return await _categoryDal.CheckCategoryAsync(filter);
         }
 
         public async Task<bool> DeleteAsync(int id)

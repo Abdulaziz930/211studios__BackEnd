@@ -51,6 +51,15 @@
                                     </ul>
                                 </div>
                                 <div class="card-item">
+                                    <h4>Platforms:</h4>
+                                    <ul>
+                                        @foreach (var platform in gameDetail.Platforms)
+                                        {
+                                            <li>@platform</li>
+                                        }
+                                    </ul>
+                                </div>
+                                <div class="card-item">
                                     <h4>Creation date:</h4>
                                     <p>@gameDetail.CreationDate.ToString("dd/MM/yyy hh/mm/ss")</p>
                                 </div>

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,6 +15,8 @@ namespace Business.Abstract
         Task<List<Category>> GetCategoriesAsync();
 
         Task<List<Category>> GetCategoriesAsync(int skipCount, int takeCount);
+
+        Task<bool> CheckCategoryAsync(Expression<Func<Category, bool>> filter);
 
         Task<bool> AddAsync(Category category);
 

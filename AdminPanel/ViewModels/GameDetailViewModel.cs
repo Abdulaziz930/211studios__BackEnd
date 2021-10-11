@@ -23,10 +23,10 @@ namespace AdminPanel.ViewModels
 
         public string Size { get; set; }
 
-        public string Platform { get; set; }
-
         public string GameLink { get; set; }
 
         public List<string> Categories { get; set; }
+
+        public List<string> Platforms { get; set; }
     }
 }

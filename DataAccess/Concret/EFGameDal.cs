@@ -36,6 +36,7 @@ namespace DataAccess.Concret
         public async Task<Game> GetGameWithIncludeAsync(int id)
         {
             return await Context.Games.Include(x => x.GameDetail)
+                .ThenInclude(x => x.GameDetailPlatforms).ThenInclude(x => x.Platform)
                 .Include(x => x.GameCategories).ThenInclude(x => x.Category)
                 .FirstOrDefaultAsync(x => x.IsDeleted == false && x.Id == id 
                                     && x.GameCategories.Any(x => x.Category.IsDeleted == false && x.GameId == id));
@@ -57,6 +58,11 @@ namespace DataAccess.Concret
                 await dbContextTransaction.RollbackAsync();
                 throw;
             }
+        }
+
+        public async Task<bool> CheckGameAsync(Expression<Func<Game, bool>> filter)
+        {
+            return await Context.Games.AnyAsync(filter);
         }
     }
 }
