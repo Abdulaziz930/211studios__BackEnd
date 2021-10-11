@@ -4,6 +4,7 @@ using Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,6 +23,11 @@ namespace Business.Concret
             await _platformDal.AddAsync(platform);
 
             return true;
+        }
+
+        public async Task<bool> CheckPlatformAsync(Expression<Func<Platform, bool>> filter)
+        {
+            return await _platformDal.CheckPlatformAsync(filter);
         }
 
         public async Task<bool> DeleteAsync(int id)

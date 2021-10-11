@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,6 +19,8 @@ namespace Business.Abstract
         Task<List<Game>> GetGamesAsync(int takeCount);
         
         Task<List<Game>> GetGamesAsync(int skipCount, int takeCount);
+
+        Task<bool> CheckGameAsync(Expression<Func<Game, bool>> filter);
 
         Task<bool> AddAsync(Game game);
 

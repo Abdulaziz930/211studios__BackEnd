@@ -58,6 +58,13 @@ namespace AdminPanel.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Platform platform)
         {
+            var isExist = await _platformService.CheckPlatformAsync(x => x.IsDeleted == false && x.Name.ToLower() == platform.Name.ToLower());
+            if (isExist)
+            {
+                ModelState.AddModelError("Name", "There is a platform with this name");
+                return View();
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(platform);
@@ -93,7 +100,7 @@ namespace AdminPanel.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(int? id, Platform platform)
+        public async Task<IActionResult> Update(int? id, PlatformDetailViewModel platform)
         {
             if (id is null)
                 return BadRequest();
@@ -104,6 +111,14 @@ namespace AdminPanel.Controllers
             var dbPlatform = await _platformService.GetPlatformAsync(id.Value);
             if (dbPlatform is null)
                 return NotFound();
+
+            var isExist = await _platformService
+                .CheckPlatformAsync(x => x.IsDeleted == false && x.Name.ToLower() == platform.Name.ToLower() && x.Id != dbPlatform.Id);
+            if (isExist)
+            {
+                ModelState.AddModelError("Name", "There is a platform with this name");
+                return View(platform);
+            }
 
             dbPlatform.Name = platform.Name;
             dbPlatform.Logo = platform.Logo;

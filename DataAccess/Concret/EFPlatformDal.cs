@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,6 +15,11 @@ namespace DataAccess.Concret
     {
         public EFPlatformDal(AppDbContext context) : base(context)
         {
+        }
+
+        public async Task<bool> CheckPlatformAsync(Expression<Func<Platform, bool>> filter)
+        {
+            return await Context.Platforms.AnyAsync(filter);
         }
 
         public async Task<List<Platform>> GetPlatformsBySkipAndTakeCountAsync(int skipCount, int takeCount)

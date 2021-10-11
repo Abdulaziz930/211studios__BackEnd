@@ -73,11 +73,19 @@ namespace AdminPanel.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Game game, List<int> categoriesId, List<int> platformsId)
         {
+                
             var categories = await _categoryService.GetCategoriesAsync();
             ViewBag.Categories = categories;
 
             var platforms = await _platformService.GetPlatformsAsync();
             ViewBag.Platforms = platforms;
+
+            var isExists = await _gameService.CheckGameAsync(x => x.IsDeleted == false && x.Name.ToLower() == game.Name.ToLower());
+            if (isExists)
+            {
+                ModelState.AddModelError("Name", "There is a game with this name");
+                return View();
+            }
 
             if (game.Photo == null)
             {
@@ -183,6 +191,9 @@ namespace AdminPanel.Controllers
 
         public async Task<IActionResult> Update(int? id)
         {
+            var platforms = await _platformService.GetPlatformsAsync();
+            ViewBag.Platforms = platforms;
+
             if (id is null)
                 return BadRequest();
 
@@ -198,8 +209,13 @@ namespace AdminPanel.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(Game game, int? id, List<int> categoriesId)
+        public async Task<IActionResult> Update(Game game, int? id, List<int> categoriesId, List<int> platformsId)
         {
+
+            var platforms = await _platformService.GetPlatformsAsync();
+            ViewBag.Platforms = platforms;
+
+
             if (id == null)
                 return BadRequest();
 
@@ -209,9 +225,17 @@ namespace AdminPanel.Controllers
             var categories = await _categoryService.GetCategoriesAsync();
             ViewBag.Categories = categories;
 
+
             var dbGame = await _gameService.GetGameWithIncludeAsync(id.Value);
             if (dbGame is null)
                 return NotFound();
+
+            var isExists = await _gameService.CheckGameAsync(x => x.IsDeleted == false && x.Name.ToLower() == game.Name.ToLower() && x.Id != game.Id);
+            if (isExists)
+            {
+                ModelState.AddModelError("Name", "There is a game with this name");
+                return View(dbGame);
+            }
 
             var imageFileName = dbGame.Image;
             var videoFileName = dbGame.GameDetail.Video;
@@ -285,7 +309,20 @@ namespace AdminPanel.Controllers
                 };
                 gameCategoryList.Add(gameCategory);
             }
+
+            var gameDetailPlatformList = new List<GameDetailPlatform>();
+            foreach (var item in platformsId)
+            {
+                var gameDetailPlatform = new GameDetailPlatform
+                {
+                    GameDetailId = game.GameDetail.Id,
+                    PlatformId = item
+                };
+                gameDetailPlatformList.Add(gameDetailPlatform);
+            }
+
             dbGame.GameCategories = gameCategoryList;
+            dbGame.GameDetail.GameDetailPlatforms = gameDetailPlatformList;
 
             dbGame.GameDetail.LastModificationDate = DateTime.UtcNow;
             dbGame.Name = game.Name;
@@ -322,6 +359,15 @@ namespace AdminPanel.Controllers
                 }
             }
 
+            var platforms = new List<string>();
+            foreach (var platform in game.GameDetail.GameDetailPlatforms)
+            {
+                if(platform.Platform.IsDeleted == false)
+                {
+                    platforms.Add(platform.Platform.Name);
+                }
+            }
+
             var gameDetailVM = new GameDetailViewModel
             {
                 Id = game.Id,
@@ -333,7 +379,8 @@ namespace AdminPanel.Controllers
                 GameLink = game.GameDetail.GameLink,
                 CreationDate = game.GameDetail.CreationDate,
                 LastModificationDate = game.GameDetail.LastModificationDate,
-                Categories = categories
+                Categories = categories,
+                Platforms = platforms
             };
 
             return View(gameDetailVM);
@@ -394,6 +441,15 @@ namespace AdminPanel.Controllers
                 }
             }
 
+            var platforms = new List<string>();
+            foreach (var platform in game.GameDetail.GameDetailPlatforms)
+            {
+                if (platform.Platform.IsDeleted == false)
+                {
+                    platforms.Add(platform.Platform.Name);
+                }
+            }
+
             var gameDetailVM = new GameDetailViewModel
             {
                 Id = game.Id,
@@ -405,7 +461,8 @@ namespace AdminPanel.Controllers
                 GameLink = game.GameDetail.GameLink,
                 CreationDate = game.GameDetail.CreationDate,
                 LastModificationDate = game.GameDetail.LastModificationDate,
-                Categories = categories
+                Categories = categories,
+                Platforms = platforms
             };
 
             return View(gameDetailVM);

@@ -56,6 +56,13 @@ namespace AdminPanel.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Category category)
         {
+            var isExist = await _categoryService.CheckCategoryAsync(x => x.IsDeleted == false && x.Name.ToLower() == category.Name.ToLower());
+            if (isExist)
+            {
+                ModelState.AddModelError("Name", "There is a category with this name");
+                return View();
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(category);
@@ -101,6 +108,14 @@ namespace AdminPanel.Controllers
             var category = await _categoryService.GetCategoryAsync(id.Value);
             if (category is null)
                 return NotFound();
+
+            var isExist = await _categoryService
+                .CheckCategoryAsync(x => x.IsDeleted == false && x.Name.ToLower() == categoryVM.Name.ToLower() && x.Id != category.Id);
+            if (isExist)
+            {
+                ModelState.AddModelError("Name", "There is a category with this name");
+                return View(categoryVM);
+            }
 
             if (!ModelState.IsValid)
             {
