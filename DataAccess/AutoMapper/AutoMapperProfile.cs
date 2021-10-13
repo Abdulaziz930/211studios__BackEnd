@@ -19,7 +19,9 @@ namespace DataAccess.AutoMapper
 
             CreateMap<GameDetail, GameDetailDto>().ReverseMap();
             
-            CreateMap<Category, CategoryDto>().ReverseMap();   
+            CreateMap<Category, CategoryDto>().ReverseMap();
+            
+            CreateMap<Platform, PlatformDto>().ReverseMap();   
         }
     }
 }

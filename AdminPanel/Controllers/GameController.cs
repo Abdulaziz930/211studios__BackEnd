@@ -73,7 +73,6 @@ namespace AdminPanel.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Game game, List<int> categoriesId, List<int> platformsId)
         {
-                
             var categories = await _categoryService.GetCategoriesAsync();
             ViewBag.Categories = categories;
 
@@ -328,7 +327,6 @@ namespace AdminPanel.Controllers
             dbGame.Name = game.Name;
             dbGame.Description = game.Description;
             dbGame.Image = imageFileName;
-            dbGame.GameDetail.GameLink = game.GameDetail.GameLink;
             dbGame.GameDetail.Size = game.GameDetail.Size;
             dbGame.GameDetail.Video = videoFileName;
 
@@ -376,7 +374,6 @@ namespace AdminPanel.Controllers
                 Image = game.Image,
                 Video = game.GameDetail.Video,
                 Size = game.GameDetail.Size,
-                GameLink = game.GameDetail.GameLink,
                 CreationDate = game.GameDetail.CreationDate,
                 LastModificationDate = game.GameDetail.LastModificationDate,
                 Categories = categories,
@@ -458,7 +455,6 @@ namespace AdminPanel.Controllers
                 Image = game.Image,
                 Video = game.GameDetail.Video,
                 Size = game.GameDetail.Size,
-                GameLink = game.GameDetail.GameLink,
                 CreationDate = game.GameDetail.CreationDate,
                 LastModificationDate = game.GameDetail.LastModificationDate,
                 Categories = categories,
