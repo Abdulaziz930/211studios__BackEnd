@@ -65,7 +65,14 @@ namespace _211_Studios.Controllers
                     categories.Add(item.Category);
                 }
 
+                var platforms = new List<Platform>();
+                foreach (var platform in game.GameDetail.GameDetailPlatforms)
+                {
+                    platforms.Add(platform.Platform);
+                }
+
                 var categoriesDto = _mapper.Map<List<CategoryDto>>(categories);
+                var platformsDto = _mapper.Map<List<PlatformDto>>(platforms);
 
                 var gameDto = new GameDetailDto
                 {
@@ -77,8 +84,8 @@ namespace _211_Studios.Controllers
                     CreationDate = game.GameDetail.CreationDate,
                     LastModificationDate = game.GameDetail.LastModificationDate,
                     Size = game.GameDetail.Size,
-                    GameLink = game.GameDetail.GameLink,
-                    Categories = categoriesDto
+                    Categories = categoriesDto,
+                    Platforms = platformsDto
                 };
 
 

@@ -23,13 +23,10 @@ namespace Entities.Models
         [Required]
         public string Size { get; set; }
 
-        [Required]
-        public string GameLink { get; set; }
-
         [NotMapped]
         public IFormFile VideoFile { get; set; }
 
-        [ForeignKey("Advertisement")]
+        [ForeignKey("Game")]
         public int GameId { get; set; }
 
         public Game Game { get; set; }

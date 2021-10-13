@@ -24,10 +24,8 @@ namespace Entities.DTOs
 
         public string Size { get; set; }
 
-        public string Platform { get; set; }
-
-        public string GameLink { get; set; }
-
         public List<CategoryDto> Categories { get; set; }
+
+        public List<PlatformDto> Platforms { get; set; }
     }
 }
