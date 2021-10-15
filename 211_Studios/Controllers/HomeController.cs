@@ -58,7 +58,19 @@ namespace _211_Studios.Controllers
                 if (games is null)
                     return NotFound();
 
-                var gamesDto = _mapper.Map<List<GameDto>>(games);
+                var gamesDto = new List<GameDto>();
+                foreach (var game in games)
+                {
+                    var gameDto = new GameDto
+                    {
+                        Id = game.Id,
+                        Name = game.Name,
+                        Description = game.Description,
+                        Image = game.Image,
+                        Category = _mapper.Map<CategoryDto>(game.GameCategories.FirstOrDefault(x => x.GameId == game.Id).Category)
+                    };
+                    gamesDto.Add(gameDto);
+                }
 
                 return Ok(gamesDto);
 

@@ -14,6 +14,8 @@ namespace Entities.DTOs
 
         public string Description { get; set; }
 
+        public CategoryDto Category { get; set; }
+
         public string Image { get; set; }
     }
 }
