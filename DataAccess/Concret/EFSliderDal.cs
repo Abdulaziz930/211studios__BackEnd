@@ -19,7 +19,7 @@ namespace DataAccess.Concret
         public async Task<List<Slider>> GetSlidersBySkipAndTakeCount(int skipCount, int takeCount)
         {
             return await Context.Sliders.Where(x => x.IsDeleted == false)
-                .OrderByDescending(x => x.Id).Skip(skipCount).Take(takeCount).ToListAsync();
+                .OrderByDescending(x => x.LastModificationDate).Skip(skipCount).Take(takeCount).ToListAsync();
         }
     }
 }
