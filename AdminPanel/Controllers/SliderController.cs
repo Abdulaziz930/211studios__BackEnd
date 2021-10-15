@@ -86,6 +86,9 @@ namespace AdminPanel.Controllers
                 return View(slider);
             }
 
+            slider.CreationDate = DateTime.UtcNow;
+            slider.LastModificationDate = DateTime.UtcNow;
+
             await _sliderService.AddAsync(slider);
 
             return RedirectToAction("Index");
@@ -154,6 +157,7 @@ namespace AdminPanel.Controllers
 
             dbSlider.Title = slider.Title;
             dbSlider.Image = fileName;
+            dbSlider.LastModificationDate = DateTime.UtcNow;
 
             await _sliderService.UpdateAsync(dbSlider);
 
