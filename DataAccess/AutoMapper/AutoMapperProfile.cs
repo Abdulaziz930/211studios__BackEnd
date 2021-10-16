@@ -22,6 +22,11 @@ namespace DataAccess.AutoMapper
             CreateMap<Category, CategoryDto>().ReverseMap();
             
             CreateMap<Platform, PlatformDto>().ReverseMap();   
+
+            CreateMap<Studio, StudioDetailDto>().ForMember(x => x.IntroDescription, y => y.MapFrom(x => x.StudioDetail.IntroDescription))
+                .ForMember(x => x.DetailImage, y => y.MapFrom(x => x.StudioDetail.DetailImage)).ReverseMap();
+
+            CreateMap<Studio, StudioDto>().ReverseMap();
         }
     }
 }

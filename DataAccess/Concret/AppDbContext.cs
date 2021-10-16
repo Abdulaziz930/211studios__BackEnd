@@ -34,5 +34,9 @@ namespace DataAccess.Concret
         public DbSet<Platform> Platforms { get; set; }
 
         public DbSet<GameDetailPlatform> GameDetailPlatforms { get; set; }
+
+        public DbSet<Studio> Studios { get; set; }
+
+        public DbSet<StudioDetail> StudioDetails { get; set; }
     }
 }

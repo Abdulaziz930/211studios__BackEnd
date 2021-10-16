@@ -17,16 +17,18 @@ namespace _211_Studios.Controllers
     {
         private readonly ISliderService _sliderService;
         private readonly IGameService _gameService;
+        private readonly IStudioService _studioService;
         private readonly IMapper _mapper;
         private readonly ILoggerManager _loggerManager;
 
         public HomeController(ISliderService sliderService, IMapper mapper
-            , ILoggerManager loggerManager, IGameService gameService)
+            , ILoggerManager loggerManager, IGameService gameService, IStudioService studioService)
         {
             _sliderService = sliderService;
             _mapper = mapper;
             _loggerManager = loggerManager;
             _gameService = gameService;
+            _studioService = studioService;
         }
 
         [HttpGet("getSliders")]
@@ -78,6 +80,26 @@ namespace _211_Studios.Controllers
             catch (Exception e)
             {
                 _loggerManager.LogError($"Something went wrong in the {nameof(GetGames)} action {e}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpGet("getStudio")]
+        public async Task<IActionResult> GetStudio()
+        {
+            try
+            {
+                var studios = await _studioService.GetStudiosAsync();
+                if (studios is null)
+                    return NotFound();
+
+                var studioDto = _mapper.Map<StudioDto>(studios.FirstOrDefault());
+
+                return Ok(studioDto);
+            }
+            catch (Exception e)
+            {
+                _loggerManager.LogError($"Something went wrong in the {nameof(GetStudio)} action {e}");
                 return StatusCode(500, "Internal server error");
             }
         }
