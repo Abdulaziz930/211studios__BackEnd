@@ -11,5 +11,9 @@ namespace Utils
         public static string ImageFolderPath = "";
 
         public static string VideoFolderPath = "";
+
+        public static string FrontImageFolderPath = "";
+
+        public static string FrontVideoFolderPath = "";
     }
 }

@@ -67,6 +67,10 @@ namespace AdminPanel
 
             Constants.VideoFolderPath = Path.Combine(_environment.WebRootPath, "videos");
 
+            Constants.FrontImageFolderPath = Configuration["FrontFolderPath:ImageFolderPath"];
+
+            Constants.FrontVideoFolderPath = Configuration["FrontFolderPath:VideoFolderPath"]; ;
+
             #endregion
         }
 
