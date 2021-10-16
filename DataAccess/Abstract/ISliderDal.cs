@@ -11,5 +11,7 @@ namespace DataAccess.Abstract
     public interface ISliderDal : IRepository<Slider>
     {
         Task<List<Slider>> GetSlidersBySkipAndTakeCount(int skipCount, int takeCount);
+
+        Task<List<Slider>> GetSlidersByLastModeficationDateAsync();
     }
 }

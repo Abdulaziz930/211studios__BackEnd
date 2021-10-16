@@ -64,5 +64,13 @@ namespace DataAccess.Concret
         {
             return await Context.Games.AnyAsync(filter);
         }
+
+        public async Task<List<Game>> GetGamesByCategoryAsync(int takeCount, int categoryId, int gameId)
+        {
+            return await Context.Games.Include(x => x.GameCategories).ThenInclude(x => x.Category)
+                .Where(x => x.IsDeleted == false && x.GameCategories.Any(x => x.Category.IsDeleted == false && x.CategoryId == categoryId) && x.Id != gameId)
+                .OrderByDescending(x => x.GameDetail.LastModificationDate)
+                .Take(takeCount).ToListAsync();
+        }
     }
 }

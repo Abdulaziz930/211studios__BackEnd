@@ -65,6 +65,11 @@ namespace Business.Concret
             return await _gameDal.GetGamesBySkipAndTakeCountAsync(skipCount, takeCount);
         }
 
+        public async Task<List<Game>> GetGamesAsync(int takeCount, int categoryId, int gameId)
+        {
+            return await _gameDal.GetGamesByCategoryAsync(takeCount, categoryId, gameId);
+        }
+
         public async Task<Game> GetGameWithIncludeAsync(int id)
         {
             return await _gameDal.GetGameWithIncludeAsync(id);
