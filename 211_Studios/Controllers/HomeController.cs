@@ -34,7 +34,7 @@ namespace _211_Studios.Controllers
         {
             try
             {
-                var sliders = await _sliderService.GetSlidersAsync();
+                var sliders = await _sliderService.GetLastSlidersAsync();
                 if (sliders is null)
                     return NotFound();
 

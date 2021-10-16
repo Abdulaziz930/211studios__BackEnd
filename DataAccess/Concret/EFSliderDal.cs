@@ -16,6 +16,11 @@ namespace DataAccess.Concret
         {
         }
 
+        public async Task<List<Slider>> GetSlidersByLastModeficationDateAsync()
+        {
+            return await Context.Sliders.Where(x => x.IsDeleted == false).OrderByDescending(x => x.LastModificationDate).ToListAsync();
+        }
+
         public async Task<List<Slider>> GetSlidersBySkipAndTakeCount(int skipCount, int takeCount)
         {
             return await Context.Sliders.Where(x => x.IsDeleted == false)

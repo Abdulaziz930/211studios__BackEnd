@@ -32,6 +32,11 @@ namespace Business.Concret
             return true;
         }
 
+        public async Task<List<Slider>> GetLastSlidersAsync()
+        {
+            return await _sliderDal.GetSlidersByLastModeficationDateAsync();
+        }
+
         public async Task<Slider> GetSliderAsync(int id)
         {
             return await _sliderDal.GetAsync(x => x.Id == id && x.IsDeleted == false);
