@@ -36,7 +36,54 @@ namespace _211_Studios.Controllers
                 if (games is null)
                     return NotFound();
 
-                var gamesDto = _mapper.Map<List<GameDto>>(games);
+                var gamesDto = new List<GameDto>();
+                foreach (var game in games)
+                {
+                    var gameDto = new GameDto
+                    {
+                        Id = game.Id,
+                        Name = game.Name,
+                        Description = game.Description,
+                        Image = game.Image,
+                        Category = _mapper.Map<CategoryDto>(game.GameCategories.FirstOrDefault(x => x.GameId == game.Id).Category)
+                    };
+                    gamesDto.Add(gameDto);
+                }
+
+                return Ok(gamesDto);
+            }
+            catch (Exception e)
+            {
+                _loggerManager.LogError($"Something went wrong in the {nameof(GetGamesAsync)} action {e}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpGet("getGamesByCategory/{categoryId}/{gameId}/{takeCount}")]
+        public async Task<IActionResult> GetGamesAsync([FromRoute] int? categoryId, int gameId ,int takeCount = 3)
+        {
+            try
+            {
+                if (categoryId is null)
+                    return BadRequest();
+
+                var games = await _gameService.GetGamesAsync(takeCount, categoryId.Value, gameId);
+                if (games is null)
+                    return NotFound();
+
+                var gamesDto = new List<GameDto>();
+                foreach (var game in games)
+                {
+                    var gameDto = new GameDto
+                    {
+                        Id = game.Id,
+                        Name = game.Name,
+                        Description = game.Description,
+                        Image = game.Image,
+                        Category = _mapper.Map<CategoryDto>(game.GameCategories.FirstOrDefault(x => x.GameId == game.Id).Category)
+                    };
+                    gamesDto.Add(gameDto);
+                }
 
                 return Ok(gamesDto);
             }

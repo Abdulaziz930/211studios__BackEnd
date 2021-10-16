@@ -13,6 +13,8 @@ namespace DataAccess.Abstract
     {
         Task<List<Game>> GetGamesByTakeCountAsync(int takeCount);
 
+        Task<List<Game>> GetGamesByCategoryAsync(int takeCount, int categoryId, int gameId);
+
         Task<List<Game>> GetGamesBySkipAndTakeCountAsync(int skipCount, int takeCount);
 
         Task<Game> GetGameWithIncludeAsync(int id);
