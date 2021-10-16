@@ -1,0 +1,49 @@
+﻿
+@{
+    ViewData["Title"] = "Our Company";
+    StudioViewModel studio = Model;
+}
+
+<div class="section-header">
+    <h1>Our Company</h1>
+</div>
+<div class="section-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    @if (studio is null)
+                    {
+                        <div class="alert alert-warning">There are no company about item yet, please add slider item</div>
+                    }
+                    else
+                    {
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Image</th>
+                                    <th scope="col">Title</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr>
+                                    <td>
+                                        <img src="~/images/@studio.Image" class="img-fluid rounded-circle mt-3" style="width: 100px; height: 100px;" />
+                                    </td>
+                                    <td>@studio.Title</td>
+                                    <td>
+                                        <a asp-action="Detail" asp-route-id="@studio.Id" class="btn btn-success">Detail</a>
+                                        <a asp-action="Update" asp-route-id="@studio.Id" class="btn btn-warning">Update</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
