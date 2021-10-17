@@ -38,5 +38,9 @@ namespace DataAccess.Concret
         public DbSet<Studio> Studios { get; set; }
 
         public DbSet<StudioDetail> StudioDetails { get; set; }
+
+        public DbSet<Bio> Bios { get; set; }
+
+        public DbSet<Social> Socials { get; set; }
     }
 }

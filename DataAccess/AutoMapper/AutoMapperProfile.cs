@@ -27,6 +27,12 @@ namespace DataAccess.AutoMapper
                 .ForMember(x => x.DetailImage, y => y.MapFrom(x => x.StudioDetail.DetailImage)).ReverseMap();
 
             CreateMap<Studio, StudioDto>().ReverseMap();
+
+            CreateMap<Bio, BioDto>().ReverseMap();
+
+            CreateMap<Bio, BioContactDto>().ReverseMap();
+
+            CreateMap<Social, SocialDto>().ReverseMap();
         }
     }
 }

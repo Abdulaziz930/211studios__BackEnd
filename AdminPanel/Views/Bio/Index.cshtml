@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewData["Title"] = "Bio Informations";
+    BioViewModel bio = Model;
+}
+
+<div class="section-header">
+    <h1>Bio Informations</h1>
+</div>
+<div class="section-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    @if (bio is null)
+                    {
+                        <div class="alert alert-warning">There are no bio information item yet, please add bio information</div>
+                    }
+                    else
+                    {
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Phone</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr>
+                                    <td>@bio.Email</td>
+                                    <td>@bio.PhoneNumber</td>
+                                    <td>
+                                        <a asp-action="Detail" asp-route-id="@bio.Id" class="btn btn-success">Detail</a>
+                                        <a asp-action="Update" asp-route-id="@bio.Id" class="btn btn-warning">Update</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
