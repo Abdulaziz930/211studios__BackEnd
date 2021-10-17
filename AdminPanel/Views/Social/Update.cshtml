@@ -1,0 +1,45 @@
+﻿@model SocialDetailViewModel
+@{
+    ViewData["Title"] = "Update social media informations";
+}
+
+<div class="section-header">
+    <h1>Update social media informations</h1>
+</div>
+<div class="section-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <form method="post">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label asp-for="SocialName">Social Media Name</label>
+                            <input asp-for="SocialName" class="form-control" placeholder="Social Media Name">
+                            <span asp-validation-for="SocialName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="SocialLink">Social Media Link</label>
+                            <textarea asp-for="SocialLink" class="form-control" rows="4" placeholder="Social Media Link"></textarea>
+                            <span asp-validation-for="SocialLink" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="SocialIcon">Social Media Icon</label>
+                            <input asp-for="SocialIcon" class="form-control" placeholder="Social Media Icon">
+                            <span asp-validation-for="SocialIcon" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="card-footer text-right">
+                        <button class="btn btn-warning">Update</button>
+                        <a asp-action="index" class="btn btn-info">Cancle</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
+
