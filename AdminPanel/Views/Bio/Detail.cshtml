@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewData["Title"] = "Bio informations detail";
+    Bio bio = Model;
+}
+
+<div class="section-header">
+    <h1>Bio informations detail</h1>
+</div>
+<div class="section-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="container">
+                    <div class="detail-content" style="padding-top: 20px; padding-bottom: 20px;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card-item">
+                                    <h4>Email:</h4>
+                                    <p>@bio.Email</p>
+                                </div>
+                                <div class="card-item">
+                                    <h4>Phone number:</h4>
+                                    <p>@bio.PhoneNumber</p>
+                                </div>
+                                <div class="card-item">
+                                    <h4>Address:</h4>
+                                    <p>@bio.Address</p>
+                                </div>
+                                <div class="card-item">
+                                    <h4>Footer Description:</h4>
+                                    <p>@bio.FooterDescription</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-right">
+                        <a asp-action="index" class="btn btn-info"><i class="fas fa-arrow-left"></i> Back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
