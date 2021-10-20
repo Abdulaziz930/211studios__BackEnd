@@ -19,7 +19,7 @@
                                     <img src="~/images/@studioDetail.Image" class="img-fluid" />
                                 </div>
                                 <div class="img-box mt-3">
-                                    <img src="~/images/@studioDetail.DetailImage" class="img-fluid" />
+                                    <img src="~/images/@studioDetail.BannerImage" class="img-fluid" />
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -32,8 +32,12 @@
                                     <p>@Html.Raw(studioDetail.Description)</p>
                                 </div>
                                 <div class="card-item">
-                                    <h4>Intro Description:</h4>
-                                    <p>@Html.Raw(studioDetail.IntroDescription)</p>
+                                    <h4>Banner Title:</h4>
+                                    <p>@studioDetail.BannerTitle</p>
+                                </div>
+                                <div class="card-item">
+                                    <h4>Banner Description:</h4>
+                                    <p>@Html.Raw(studioDetail.BannerDescription)</p>
                                 </div>
                             </div>
                         </div>

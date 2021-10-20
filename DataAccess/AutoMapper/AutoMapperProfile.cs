@@ -21,10 +21,7 @@ namespace DataAccess.AutoMapper
             
             CreateMap<Category, CategoryDto>().ReverseMap();
             
-            CreateMap<Platform, PlatformDto>().ReverseMap();   
-
-            CreateMap<Studio, StudioDetailDto>().ForMember(x => x.IntroDescription, y => y.MapFrom(x => x.StudioDetail.IntroDescription))
-                .ForMember(x => x.DetailImage, y => y.MapFrom(x => x.StudioDetail.DetailImage)).ReverseMap();
+            CreateMap<Platform, PlatformDto>().ReverseMap();
 
             CreateMap<Studio, StudioDto>().ReverseMap();
 
@@ -33,6 +30,11 @@ namespace DataAccess.AutoMapper
             CreateMap<Bio, BioContactDto>().ReverseMap();
 
             CreateMap<Social, SocialDto>().ReverseMap();
+
+            CreateMap<Studio, StudioPageDto>()
+                .ForMember(x => x.BannerTitle, y => y.MapFrom(x => x.Banner.Title))
+                .ForMember(x => x.BannerDescription, y => y.MapFrom(x => x.Banner.Description))
+                .ForMember(x => x.BannerImage, y => y.MapFrom(x => x.Banner.Image)).ReverseMap();
         }
     }
 }

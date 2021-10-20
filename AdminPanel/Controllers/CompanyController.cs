@@ -55,21 +55,9 @@ namespace AdminPanel.Controllers
                 return View();
             }
 
-            if (studio.StudioDetail.Photo == null)
-            {
-                ModelState.AddModelError("StudioDetail.Photo", "Photo field cannot be empty");
-                return View();
-            }
-
             if (!studio.Photo.IsImage())
             {
                 ModelState.AddModelError("Photo", "This is not a picture");
-                return View();
-            }
-
-            if (!studio.StudioDetail.Photo.IsImage())
-            {
-                ModelState.AddModelError("StudioDetail.Photo", "This is not a picture");
                 return View();
             }
 
@@ -79,9 +67,15 @@ namespace AdminPanel.Controllers
                 return View();
             }
 
-            if (!studio.StudioDetail.Photo.IsSizeAllowed(3000))
+            if (studio.Banner.Photo == null)
             {
-                ModelState.AddModelError("StudioDetail.Photo", "The size of the image you uploaded is 3 MB higher.");
+                ModelState.AddModelError("Banner.Photo", "Photo field cannot be empty");
+                return View();
+            }
+
+            if (!studio.Banner.Photo.IsImage())
+            {
+                ModelState.AddModelError("Banner.Photo", "This is not a picture");
                 return View();
             }
 
@@ -91,24 +85,23 @@ namespace AdminPanel.Controllers
                 Constants.FrontImageFolderPath
             };
 
-            var detailImageFolderPathList = new List<string>()
+            var bannerImageFolderPathList = new List<string>()
             {
                 Constants.ImageFolderPath,
                 Constants.FrontImageFolderPath
             };
 
             var imageFileName = await FileUtil.GenerateFileAsync(imageFolderPathList, studio.Photo);
-            var detaiImageFileName = await FileUtil.GenerateFileAsync(detailImageFolderPathList, studio.StudioDetail.Photo);
+            var bannerImageFileName = await FileUtil.GenerateFileAsync(bannerImageFolderPathList, studio.Banner.Photo);
 
             studio.Image = imageFileName;
-            studio.StudioDetail.DetailImage = detaiImageFileName;
+            studio.Banner.Image = bannerImageFileName;
 
             if (!ModelState.IsValid)
             {
                 return View(studio);
             }
 
-            await _studioService.AddRangeAsync(studio, studio.StudioDetail);
 
             return RedirectToAction("Index");
         }
@@ -144,7 +137,7 @@ namespace AdminPanel.Controllers
                 return NotFound();
 
             var imageFileName = dbStudio.Image;
-            var detailImageFileName = dbStudio.StudioDetail.DetailImage;
+            var bannerImageFileName = dbStudio.Banner.Image;
 
             if (studio.Photo != null)
             {
@@ -185,11 +178,11 @@ namespace AdminPanel.Controllers
                 imageFileName = await FileUtil.GenerateFileAsync(imageFolderPathList, studio.Photo);
             }
 
-            if (studio.StudioDetail.Photo != null)
+            if (studio.Banner.Photo != null)
             {
-                if (!studio.StudioDetail.Photo.IsImage())
+                if (!studio.Banner.Photo.IsImage())
                 {
-                    ModelState.AddModelError("StudioDetail.Photo", "This is not a picture");
+                    ModelState.AddModelError("Banner.Photo", "This is not a picture");
                     return View(dbStudio);
                 }
 
@@ -209,13 +202,13 @@ namespace AdminPanel.Controllers
                     }
                 }
 
-                var detailImageFolderPathList = new List<string>()
+                var bannerImageFolderPathList = new List<string>()
                 {
-                    Constants.VideoFolderPath,
-                    Constants.FrontVideoFolderPath
+                    Constants.ImageFolderPath,
+                    Constants.FrontImageFolderPath
                 };
 
-                detailImageFileName = await FileUtil.GenerateFileAsync(detailImageFolderPathList, studio.StudioDetail.Photo);
+                bannerImageFileName = await FileUtil.GenerateFileAsync(bannerImageFolderPathList, studio.Banner.Photo);
             }
 
             if (!ModelState.IsValid)
@@ -226,8 +219,9 @@ namespace AdminPanel.Controllers
             dbStudio.Title = studio.Title;
             dbStudio.Description = studio.Description;
             dbStudio.Image = imageFileName;
-            dbStudio.StudioDetail.IntroDescription = studio.StudioDetail.IntroDescription;
-            dbStudio.StudioDetail.DetailImage = detailImageFileName;
+            dbStudio.Banner.Image = bannerImageFileName;
+            dbStudio.Banner.Title = studio.Banner.Title;
+            dbStudio.Banner.Description = studio.Banner.Description;
 
             await _studioService.UpdateAsync(dbStudio);
 
@@ -253,8 +247,9 @@ namespace AdminPanel.Controllers
                 Title = studio.Title,
                 Description = studio.Description,
                 Image = studio.Image,
-                IntroDescription = studio.StudioDetail.IntroDescription,
-                DetailImage = studio.StudioDetail.DetailImage
+                BannerDescription = studio.Banner.Description,
+                BannerTitle = studio.Banner.Title,
+                BannerImage = studio.Banner.Image
             };
 
             return View(studioDetailVM);

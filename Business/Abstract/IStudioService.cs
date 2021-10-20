@@ -11,6 +11,8 @@ namespace Business.Abstract
     {
         Task<Studio> GetStudioAsync(int id);
 
+        Task<Studio> GetStudioAsync();
+
         Task<Studio> GetStudioWithIncludeAsync(int id);
 
         Task<List<Studio>> GetStudiosAsync();

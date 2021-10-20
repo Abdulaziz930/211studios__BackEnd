@@ -42,5 +42,7 @@ namespace DataAccess.Concret
         public DbSet<Bio> Bios { get; set; }
 
         public DbSet<Social> Socials { get; set; }
+
+        public DbSet<Banner> Banners { get; set; }
     }
 }
