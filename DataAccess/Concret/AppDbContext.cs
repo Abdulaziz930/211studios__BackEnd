@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Concret
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<AppUser>
     {
         public AppDbContext()
         {
@@ -44,5 +45,9 @@ namespace DataAccess.Concret
         public DbSet<Social> Socials { get; set; }
 
         public DbSet<Banner> Banners { get; set; }
+
+        public DbSet<AppUserDetail> AppUserDetails { get; set; }
+
+        public DbSet<UserSocialMedia> UserSocialMedias { get; set; }
     }
 }

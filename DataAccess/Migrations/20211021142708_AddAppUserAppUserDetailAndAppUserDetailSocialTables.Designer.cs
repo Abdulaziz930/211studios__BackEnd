@@ -4,14 +4,16 @@ using DataAccess.Concret;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211021142708_AddAppUserAppUserDetailAndAppUserDetailSocialTables")]
+    partial class AddAppUserAppUserDetailAndAppUserDetailSocialTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,9 +47,6 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -118,6 +117,28 @@ namespace DataAccess.Migrations
                     b.HasIndex("AppUserId");
 
                     b.ToTable("AppUserDetails");
+                });
+
+            modelBuilder.Entity("Entities.Models.AppUserDetailSocial", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AppUserDetailId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SocialId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserDetailId");
+
+                    b.HasIndex("SocialId");
+
+                    b.ToTable("AppUserDetailSocials");
                 });
 
             modelBuilder.Entity("Entities.Models.Banner", b =>
@@ -424,34 +445,6 @@ namespace DataAccess.Migrations
                     b.ToTable("StudioDetails");
                 });
 
-            modelBuilder.Entity("Entities.Models.UserSocialMedia", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AppUserDetailId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Icon")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Link")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserDetailId");
-
-                    b.ToTable("UserSocialMedias");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -592,6 +585,25 @@ namespace DataAccess.Migrations
                     b.Navigation("AppUser");
                 });
 
+            modelBuilder.Entity("Entities.Models.AppUserDetailSocial", b =>
+                {
+                    b.HasOne("Entities.Models.AppUserDetail", "AppUserDetail")
+                        .WithMany("AppUserDetailSocials")
+                        .HasForeignKey("AppUserDetailId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.Social", "Social")
+                        .WithMany("AppUserDetailSocials")
+                        .HasForeignKey("SocialId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUserDetail");
+
+                    b.Navigation("Social");
+                });
+
             modelBuilder.Entity("Entities.Models.GameCategory", b =>
                 {
                     b.HasOne("Entities.Models.Category", "Category")
@@ -663,17 +675,6 @@ namespace DataAccess.Migrations
                     b.Navigation("Studio");
                 });
 
-            modelBuilder.Entity("Entities.Models.UserSocialMedia", b =>
-                {
-                    b.HasOne("Entities.Models.AppUserDetail", "AppUserDetail")
-                        .WithMany("UserSocialMedias")
-                        .HasForeignKey("AppUserDetailId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUserDetail");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -727,7 +728,7 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.Models.AppUserDetail", b =>
                 {
-                    b.Navigation("UserSocialMedias");
+                    b.Navigation("AppUserDetailSocials");
                 });
 
             modelBuilder.Entity("Entities.Models.Banner", b =>
@@ -755,6 +756,11 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Entities.Models.Platform", b =>
                 {
                     b.Navigation("GameDetailPlatforms");
+                });
+
+            modelBuilder.Entity("Entities.Models.Social", b =>
+                {
+                    b.Navigation("AppUserDetailSocials");
                 });
 #pragma warning restore 612, 618
         }
