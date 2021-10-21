@@ -1,5 +1,5 @@
-﻿using Core.Entities;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,21 +10,17 @@ using System.Threading.Tasks;
 
 namespace Entities.Models
 {
-    public class Studio : IEntity
+    public class AppUser : IdentityUser
     {
-        public int Id { get; set; }
+        [Required, StringLength(255)]
+        public string FullName { get; set; }
 
-        [Required]
-        public string Title { get; set; }
-
-        [Required]
-        public string Description { get; set; }
+        [Required, StringLength(255)]
+        public string Position { get; set; }
 
         public string Image { get; set; }
 
-        public int BannerId { get; set; }
-
-        public Banner Banner { get; set; }
+        public bool IsActive { get; set; }
 
         [NotMapped]
         public IFormFile Photo { get; set; }

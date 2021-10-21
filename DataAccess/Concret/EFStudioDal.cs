@@ -34,9 +34,14 @@ namespace DataAccess.Concret
             }
         }
 
-        public async Task<Studio> GetStudiWithStudioDetailAsync(int id)
+        public async Task<Studio> GetStudioWithIncludeAsync(int id)
         {
-            return await Context.Studios.Include(x => x.StudioDetail).FirstOrDefaultAsync(x => x.Id == id);
+            return await Context.Studios.Include(x => x.Banner).FirstOrDefaultAsync(x => x.Id == id && x.Banner.IsDeleted == false);
+        }
+
+        public async Task<Studio> GetStudioWithIncludeAsync()
+        {
+            return await Context.Studios.Include(x => x.Banner).FirstOrDefaultAsync(x => x.Banner.IsDeleted == false);
         }
     }
 }

@@ -38,6 +38,11 @@ namespace Business.Concret
             return await _studioDal.GetAsync(x => x.Id == id);
         }
 
+        public async Task<Studio> GetStudioAsync()
+        {
+            return await _studioDal.GetStudioWithIncludeAsync();
+        }
+
         public async Task<List<Studio>> GetStudiosAsync()
         {
             return await _studioDal.GetAllAsync();
@@ -45,7 +50,7 @@ namespace Business.Concret
 
         public async Task<Studio> GetStudioWithIncludeAsync(int id)
         {
-            return await _studioDal.GetStudiWithStudioDetailAsync(id);
+            return await _studioDal.GetStudioWithIncludeAsync(id);
         }
 
         public async Task<bool> UpdateAsync(Studio studio)

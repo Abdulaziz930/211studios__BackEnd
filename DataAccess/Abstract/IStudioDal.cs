@@ -10,8 +10,10 @@ namespace DataAccess.Abstract
 {
     public interface IStudioDal : IRepository<Studio>
     {
-        Task<Studio> GetStudiWithStudioDetailAsync(int id);
-
         Task<bool> AddRangeAsync(Studio studio, StudioDetail studioDetail);
+
+        Task<Studio> GetStudioWithIncludeAsync(int id);
+
+        Task<Studio> GetStudioWithIncludeAsync();
     }
 }

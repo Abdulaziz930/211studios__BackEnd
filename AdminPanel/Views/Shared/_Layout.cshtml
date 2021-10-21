@@ -97,6 +97,17 @@
                             <a asp-controller="Dashboard" asp-action="Index" class="nav-link"><i class="fas fa-fire"></i><span>Dashboard</span></a>
                         </li>
                         <li class="nav-item dropdown">
+                            <a href="#" class="nav-link has-dropdown"><i class="fas fa-users"></i> <span>Users</span></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="nav-link" asp-controller="User" asp-action="Index">All users</a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" asp-controller="User" asp-action="Create">Create new user</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
                             <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Slider</span></a>
                             <ul class="dropdown-menu">
                                 <li>
@@ -165,15 +176,6 @@
                                 <li>
                                     <a class="nav-link" asp-controller="Social" asp-action="Create">Add new social media</a>
                                 </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a href="#" class="nav-link has-dropdown"><i class="fas fa-exclamation"></i> <span>Errors</span></a>
-                            <ul class="dropdown-menu">
-                                <li><a class="nav-link" href="errors-503.html">503</a></li>
-                                <li><a class="nav-link" href="errors-403.html">403</a></li>
-                                <li><a class="nav-link" href="errors-404.html">404</a></li>
-                                <li><a class="nav-link" href="errors-500.html">500</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">

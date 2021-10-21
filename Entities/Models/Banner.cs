@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Models
 {
-    public class Studio : IEntity
+    public class Banner : IEntity
     {
         public int Id { get; set; }
 
@@ -22,9 +22,9 @@ namespace Entities.Models
 
         public string Image { get; set; }
 
-        public int BannerId { get; set; }
+        public bool IsDeleted { get; set; }
 
-        public Banner Banner { get; set; }
+        public ICollection<Studio> Studios { get; set; }
 
         [NotMapped]
         public IFormFile Photo { get; set; }

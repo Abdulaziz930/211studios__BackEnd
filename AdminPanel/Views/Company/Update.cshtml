@@ -24,9 +24,14 @@
                             <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="StudioDetail.IntroDescription">Intro Description</label>
-                            <textarea asp-for="StudioDetail.IntroDescription" class="form-control" placeholder="Intro Description"></textarea>
-                            <span asp-validation-for="StudioDetail.IntroDescription" class="text-danger"></span>
+                            <label asp-for="Banner.Title">Banner Title</label>
+                            <input asp-for="Banner.Title" class="form-control" placeholder="Banner Title">
+                            <span asp-validation-for="Banner.Title" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Banner.Description">Banner Description</label>
+                            <textarea asp-for="Banner.Description" class="form-control" rows="4" placeholder="Banner Description"></textarea>
+                            <span asp-validation-for="Banner.Description" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label asp-for="Photo">Image</label>
@@ -37,12 +42,12 @@
                             <img src="~/images/@Model.Image" class="img-fluid" id="img-file" style="width: 450px; height: 250px;" />
                         </div>
                         <div class="form-group">
-                            <label asp-for="StudioDetail.Photo">Detail Image</label>
-                            <input asp-for="StudioDetail.Photo" class="form-control" accept="image/*" type="file">
-                            <span asp-validation-for="StudioDetail.Photo" class="text-danger"></span>
+                            <label asp-for="Banner.Photo">Banner Image</label>
+                            <input asp-for="Banner.Photo" class="form-control" accept="image/*" type="file">
+                            <span asp-validation-for="Banner.Photo" class="text-danger"></span>
                         </div>
                         <div>
-                            <img src="~/images/@Model.StudioDetail.DetailImage" class="img-fluid" id="img-file" style="width: 450px; height: 250px;" />
+                            <img src="~/images/@Model.Banner.Image" class="img-fluid" id="banner-img-file" style="width: 450px; height: 250px;" />
                         </div>
                     </div>
                     <div class="card-footer text-right">
@@ -75,8 +80,8 @@
             img.src = URL.createObjectURL(this.files[0]);
         })
 
-        document.querySelector("#StudioDetail_Photo").addEventListener("change", function () {
-            let img = document.getElementById("img-file");
+        document.querySelector("#Banner_Photo").addEventListener("change", function () {
+            let img = document.getElementById("banner-img-file");
             img.src = URL.createObjectURL(this.files[0]);
         })
     </script>
