@@ -43,6 +43,8 @@
                                         <td>
                                             <a asp-action="Detail" asp-route-id="@user.Id" class="btn btn-success">Detail</a>
                                             <a asp-action="Update" asp-route-id="@user.Id" class="btn btn-warning">Update</a>
+                                            <a asp-action="ChangePassword" asp-route-id="@user.Id" class="btn btn-info">Change Password</a>
+                                            <a asp-action="ChangeRole" asp-route-id="@user.Id" class="btn btn-primary">Change Role</a>
                                             @if (user.IsActive)
                                             {
                                                 <a asp-action="Activity" asp-route-id="@user.Id" class="btn btn-danger">Deactivate</a>
