@@ -46,8 +46,6 @@ namespace DataAccess.Concret
 
         public DbSet<Banner> Banners { get; set; }
 
-        public DbSet<AppUserDetail> AppUserDetails { get; set; }
-
         public DbSet<UserSocialMedia> UserSocialMedias { get; set; }
     }
 }

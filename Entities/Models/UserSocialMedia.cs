@@ -20,8 +20,8 @@ namespace Entities.Models
 
         public bool IsDeleted { get; set; }
 
-        public int AppUserDetailId { get; set; }
+        public string AppUserId { get; set; }
 
-        public AppUserDetail AppUserDetail { get; set; }
+        public AppUser AppUser { get; set; }
     }
 }

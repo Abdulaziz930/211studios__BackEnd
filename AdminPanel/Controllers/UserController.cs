@@ -1,4 +1,5 @@
 ﻿using AdminPanel.ViewModels;
+using Business.Abstract;
 using DataAccess.Identity;
 using Entities.Models;
 using Microsoft.AspNetCore.Identity;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Utils;
@@ -116,7 +118,98 @@ namespace AdminPanel.Controllers
 
             await _userManager.AddToRoleAsync(newUser, RoleConstants.ModeratorRole);
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Update(string id)
+        {
+            if (id is null)
+                return BadRequest();
+
+            var dbUser = await _userManager.FindByIdAsync(id);
+            if (dbUser is null)
+                return NotFound();
+
+            var user = new UpdateUserViewModel
+            {
+                FullName = dbUser.FullName,
+                UserName = dbUser.UserName,
+                Position = dbUser.Position,
+                Email = dbUser.Email,
+                Image = dbUser.Image,
+                Description = dbUser.Description ?? ""
+            };
+
+            return View(user);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(string id, UpdateUserViewModel updateUserVM)
+        {
+            if (id is null)
+                return BadRequest();
+
+            var dbUser = await _userManager.FindByIdAsync(id);
+            if (dbUser is null)
+                return NotFound();
+
+            var imageFileName = dbUser.Image;
+
+            if(updateUserVM.Photo != null)
+            {
+                if (!updateUserVM.Photo.IsImage())
+                {
+                    ModelState.AddModelError("Photo", "This is not a picture");
+                    return View();
+                }
+
+                if (!updateUserVM.Photo.IsSizeAllowed(3000))
+                {
+                    ModelState.AddModelError("Photo", "The size of the image you uploaded is 3 MB higher.");
+                    return View();
+                }
+
+                var paths = new List<string>();
+
+                var backPath = Path.Combine(Constants.ImageFolderPath, dbUser.Image);
+                var frontPath = Path.Combine(Constants.FrontImageFolderPath, dbUser.Image);
+
+                paths.Add(backPath);
+                paths.Add(frontPath);
+
+                foreach (var path in paths)
+                {
+                    if (System.IO.File.Exists(path))
+                    {
+                        System.IO.File.Delete(path);
+                    }
+                }
+
+                var imageFolderPathList = new List<string>()
+                {
+                    Constants.ImageFolderPath,
+                    Constants.FrontImageFolderPath
+                };
+
+                imageFileName = await FileUtil.GenerateFileAsync(imageFolderPathList, updateUserVM.Photo);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(dbUser);
+            }
+
+            dbUser.FullName = updateUserVM.FullName;
+            dbUser.UserName = updateUserVM.UserName;
+            dbUser.Email = updateUserVM.Email;
+            dbUser.Position = updateUserVM.Position;
+            dbUser.Description = updateUserVM.Description;
+            dbUser.Image = imageFileName;
+
+            await _userManager.UpdateAsync(dbUser);
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

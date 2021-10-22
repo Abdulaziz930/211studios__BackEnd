@@ -4,14 +4,16 @@ using DataAccess.Concret;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211021194428_UpdateUsersTable")]
+    partial class UpdateUsersTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,9 +31,6 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -101,6 +100,28 @@ namespace DataAccess.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Entities.Models.AppUserDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId")
+                        .IsUnique()
+                        .HasFilter("[AppUserId] IS NOT NULL");
+
+                    b.ToTable("AppUserDetails");
                 });
 
             modelBuilder.Entity("Entities.Models.Banner", b =>
@@ -414,8 +435,8 @@ namespace DataAccess.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("AppUserDetailId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Icon")
                         .IsRequired()
@@ -430,7 +451,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
+                    b.HasIndex("AppUserDetailId");
 
                     b.ToTable("UserSocialMedias");
                 });
@@ -566,6 +587,15 @@ namespace DataAccess.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Entities.Models.AppUserDetail", b =>
+                {
+                    b.HasOne("Entities.Models.AppUser", "AppUser")
+                        .WithOne("AppUserDetail")
+                        .HasForeignKey("Entities.Models.AppUserDetail", "AppUserId");
+
+                    b.Navigation("AppUser");
+                });
+
             modelBuilder.Entity("Entities.Models.GameCategory", b =>
                 {
                     b.HasOne("Entities.Models.Category", "Category")
@@ -639,11 +669,13 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.Models.UserSocialMedia", b =>
                 {
-                    b.HasOne("Entities.Models.AppUser", "AppUser")
+                    b.HasOne("Entities.Models.AppUserDetail", "AppUserDetail")
                         .WithMany("UserSocialMedias")
-                        .HasForeignKey("AppUserId");
+                        .HasForeignKey("AppUserDetailId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("AppUser");
+                    b.Navigation("AppUserDetail");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -698,6 +730,11 @@ namespace DataAccess.Migrations
                 });
 
             modelBuilder.Entity("Entities.Models.AppUser", b =>
+                {
+                    b.Navigation("AppUserDetail");
+                });
+
+            modelBuilder.Entity("Entities.Models.AppUserDetail", b =>
                 {
                     b.Navigation("UserSocialMedias");
                 });
