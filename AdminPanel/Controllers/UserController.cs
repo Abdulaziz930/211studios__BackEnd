@@ -162,7 +162,7 @@ namespace AdminPanel.Controllers
 
             var imageFileName = dbUser.Image;
 
-            if(updateUserVM.Photo != null)
+            if (updateUserVM.Photo != null)
             {
                 if (!updateUserVM.Photo.IsImage())
                 {
@@ -347,6 +347,61 @@ namespace AdminPanel.Controllers
             await _userManager.UpdateAsync(dbUser);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        #endregion
+
+        #region Activity
+
+        public async Task<IActionResult> Activity(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return NotFound();
+
+            var dbUser = await _userManager.FindByIdAsync(id);
+            if (dbUser is null)
+                return NotFound();
+
+            if (dbUser.IsActive)
+            {
+                dbUser.IsActive = false;
+            }
+            else
+            {
+                dbUser.IsActive = true;
+            }
+
+            await _userManager.UpdateAsync(dbUser);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        #endregion
+
+        #region Detail
+
+        public async Task<IActionResult> Detail(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return BadRequest();
+
+            var dbUser = await _userManager.FindByIdAsync(id);
+            if (dbUser is null)
+                return NotFound();
+
+            var userDetailVM = new UserDetailViewModel
+            {
+                Id = dbUser.Id,
+                FullName = dbUser.FullName,
+                UserName = dbUser.UserName,
+                Email = dbUser.Email,
+                Position = dbUser.Position,
+                Description = dbUser.Description ?? "",
+                Role = (await _userManager.GetRolesAsync(dbUser)).FirstOrDefault(),
+                Image = dbUser.Image
+            };
+
+            return View(userDetailVM);
         }
 
         #endregion

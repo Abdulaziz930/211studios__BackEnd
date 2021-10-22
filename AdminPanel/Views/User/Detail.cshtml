@@ -1,0 +1,57 @@
+﻿
+@{
+    ViewData["Title"] = "User detail";
+    UserDetailViewModel user = Model;
+}
+
+<div class="section-header">
+    <h1>User detail</h1>
+</div>
+<div class="section-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="container">
+                    <div class="detail-content" style="padding-top: 20px; padding-bottom: 20px;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="img-box">
+                                    <img src="~/images/@user.Image" class="img-fluid" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card-item">
+                                    <h4>Fullname:</h4>
+                                    <p>@user.FullName</p>
+                                </div>
+                                <div class="card-item">
+                                    <h4>Username:</h4>
+                                    <p>@user.UserName</p>
+                                </div>
+                                <div class="card-item">
+                                    <h4>Email:</h4>
+                                    <p>@user.Email</p>
+                                </div>
+                                @if (user.Description != "")
+                                {
+                                    <div class="card-item">
+                                        <h4>Description:</h4>
+                                        <p>@user.Description</p>
+                                    </div>
+                                }
+                                <div class="card-item">
+                                    <h4>Role:</h4>
+                                    <p>@user.Role</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-right">
+                        <a asp-action="index" class="btn btn-info"><i class="fas fa-arrow-left"></i> Back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
