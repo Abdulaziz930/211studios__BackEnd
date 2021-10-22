@@ -280,5 +280,85 @@ namespace AdminPanel.Controllers
         }
 
         #endregion
+
+        #region ChangeRole
+
+        public async Task<IActionResult> ChangeRole(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return BadRequest();
+
+            var dbUser = await _userManager.FindByIdAsync(id);
+            if (dbUser is null)
+                return NotFound();
+
+            var changeRoleViewModel = new ChangeRoleViewModel
+            {
+                FullName = dbUser.FullName,
+                Role = (await _userManager.GetRolesAsync(dbUser)).FirstOrDefault(),
+                Roles = GetRoles()
+            };
+
+            return View(changeRoleViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeRole(string id, ChangeRoleViewModel changeRoleVM, string role)
+        {
+            if (string.IsNullOrEmpty(id))
+                return NotFound();
+
+            var dbUser = await _userManager.FindByIdAsync(id);
+            if (dbUser == null)
+                return NotFound();
+
+            var changeRoleViewModel = new ChangeRoleViewModel
+            {
+                FullName = dbUser.FullName,
+                Role = (await _userManager.GetRolesAsync(dbUser)).FirstOrDefault(),
+                Roles = GetRoles()
+            };
+
+            if (!ModelState.IsValid)
+            {
+                return View(changeRoleViewModel);
+            }
+
+            string oldRole = (await _userManager.GetRolesAsync(dbUser)).FirstOrDefault();
+            string newRole = changeRoleVM.Role;
+            if (oldRole != newRole)
+            {
+                var addResult = await _userManager.AddToRoleAsync(dbUser, newRole);
+                if (!addResult.Succeeded)
+                {
+                    ModelState.AddModelError("", "Some problem exist");
+                    return View(changeRoleViewModel);
+                }
+
+                var removeResult = await _userManager.RemoveFromRoleAsync(dbUser, oldRole);
+                if (!removeResult.Succeeded)
+                {
+                    ModelState.AddModelError("", "Some problem exist");
+                    return View(changeRoleViewModel);
+                }
+            }
+
+            await _userManager.UpdateAsync(dbUser);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        #endregion
+
+        public List<string> GetRoles()
+        {
+            List<string> roles = new List<string>();
+
+            roles.Add(RoleConstants.AdminRole);
+            roles.Add(RoleConstants.ModeratorRole);
+
+            return roles;
+        }
     }
 }
