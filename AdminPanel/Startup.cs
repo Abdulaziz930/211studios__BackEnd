@@ -77,12 +77,16 @@ namespace AdminPanel
             #region Constants
 
             Constants.ImageFolderPath = Path.Combine(_environment.WebRootPath, "images");
-
             Constants.VideoFolderPath = Path.Combine(_environment.WebRootPath, "videos");
 
             Constants.FrontImageFolderPath = Configuration["FrontFolderPath:ImageFolderPath"];
-
             Constants.FrontVideoFolderPath = Configuration["FrontFolderPath:VideoFolderPath"]; ;
+
+            Constants.EmailAdress = Configuration["Gmail:Address"];
+            Constants.EmailPassword = Configuration["Gmail:Password"];
+            Constants.EmailFolderPath = Configuration["Gmail:FolderPath"];
+
+            Constants.AdminClientPort = Configuration["ClientPort:Port"];
 
             #endregion
         }
@@ -104,13 +108,15 @@ namespace AdminPanel
 
             app.UseRouting();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Dashboard}/{action=Index}/{id?}");
+                    pattern: "{controller=User}/{action=Login}/{id?}");
             });
         }
     }

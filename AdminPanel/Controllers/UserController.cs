@@ -17,10 +17,12 @@ namespace AdminPanel.Controllers
     public class UserController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
 
-        public UserController(UserManager<AppUser> userManager)
+        public UserController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public async Task<IActionResult> Index(int page = 1)
@@ -402,6 +404,155 @@ namespace AdminPanel.Controllers
             };
 
             return View(userDetailVM);
+        }
+
+        #endregion
+
+        #region Login
+
+        public IActionResult Login()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction(nameof(Index), "Dashboard");
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel loginViewModel)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction(nameof(Index), "Dashboard");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(loginViewModel);
+            }
+
+            var existUser = await _userManager.FindByEmailAsync(loginViewModel.Email);
+            if (existUser == null)
+            {
+                ModelState.AddModelError("", "Email or password is invalid.");
+                return View();
+            }
+
+            if (existUser.IsActive == false)
+            {
+                ModelState.AddModelError("", "Your account is disabled.");
+                return View();
+            }
+
+            var loginResult = await _signInManager.PasswordSignInAsync(existUser, loginViewModel.Password,
+                loginViewModel.RememberMe, true);
+            if (!loginResult.Succeeded)
+            {
+                ModelState.AddModelError("", "Email or password is invalid.");
+                return View();
+            }
+
+            return RedirectToAction(nameof(Index), "Dashboard");
+        }
+
+        #endregion
+
+        #region Logout
+
+        public async Task<IActionResult> Logout()
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return NotFound();
+            }
+
+            await _signInManager.SignOutAsync();
+
+            return RedirectToAction(nameof(Login));
+        }
+
+        #endregion
+
+        #region ResetPassword
+
+        public IActionResult RedirectionToResetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RedirectionToResetPassword(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+                return NotFound();
+
+            var dbUser = await _userManager.FindByEmailAsync(email);
+            if (dbUser is null)
+                return NotFound();
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(dbUser);
+
+            var link = Url.Action("ResetPassword", "User", new { dbUser.Id, token }, protocol: HttpContext.Request.Scheme);
+            var title = "FORGOT YOUR PASSWORD?";
+            var description = "Not to worry, we got you! <br /> Let’s get you a new password.";
+            var buttonName = "Reset Password";
+            var homeLink = Constants.AdminClientPort;
+            var filePath = Constants.EmailFolderPath;
+            var message = FileUtil.GetEmailView(filePath, link, title, description, buttonName, homeLink);
+            await EmailUtil.SendEmailAsync(dbUser.Email, message, "ResetPassword");
+
+            return RedirectToAction("Login");
+        }
+
+        public async Task<IActionResult> ResetPassword(string id, string token)
+        {
+            if (string.IsNullOrEmpty(id))
+                return NotFound();
+
+            if (string.IsNullOrEmpty(token))
+                return BadRequest();
+
+            var dbUser = await _userManager.FindByIdAsync(id);
+            if (dbUser is null)
+                return NotFound();
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(string id, string token, ResetPasswordViewModel passwordViewModel)
+        {
+            if (string.IsNullOrEmpty(id))
+                return NotFound();
+
+            if (string.IsNullOrEmpty(token))
+                return BadRequest();
+
+            if (!ModelState.IsValid)
+            {
+                return View(passwordViewModel);
+            }
+
+            var dbUser = await _userManager.FindByIdAsync(id);
+            if (dbUser is null)
+                return NotFound();
+
+            var result = await _userManager.ResetPasswordAsync(dbUser, token, passwordViewModel.NewPassword);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+                return View(passwordViewModel);
+            }
+
+            return RedirectToAction("Login");
         }
 
         #endregion

@@ -50,5 +50,28 @@ namespace Utils
 
             return fileName;
         }
+
+        /// <summary>
+        /// Reades html file and create email html view
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="link"></param>
+        /// <param name="title"></param>
+        /// <param name="description"></param>
+        /// <param name="buttonName"></param>
+        /// <param name="homeLink"></param>
+        /// <returns>string</returns>
+        public static string GetEmailView(string filePath, string link, string title, string description
+            , string buttonName,string homeLink)
+        {
+            StreamReader streamReader = new StreamReader(filePath);
+            string mailText = streamReader.ReadToEnd();
+            streamReader.Close();
+
+            mailText = mailText.Replace("{title}", title).Replace("{description}", description)
+                .Replace("{button}", buttonName).Replace("{link}", link).Replace("{homeLink}", homeLink);
+
+            return mailText;
+        }
     }
 }

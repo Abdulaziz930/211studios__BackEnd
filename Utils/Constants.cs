@@ -15,5 +15,13 @@ namespace Utils
         public static string FrontImageFolderPath = "";
 
         public static string FrontVideoFolderPath = "";
+
+        public static string EmailAdress = "";
+
+        public static string EmailPassword = "";
+
+        public static string EmailFolderPath = "";
+
+        public static string AdminClientPort = "";
     }
 }
