@@ -496,16 +496,16 @@ namespace AdminPanel.Controllers
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(dbUser);
 
-            var link = Url.Action("ResetPassword", "User", new { dbUser.Id, token }, protocol: HttpContext.Request.Scheme);
+            var link = Url.Action(nameof(ResetPassword), "User", new { dbUser.Id, token }, protocol: HttpContext.Request.Scheme);
             var title = "FORGOT YOUR PASSWORD?";
             var description = "Not to worry, we got you! <br /> Let’s get you a new password.";
             var buttonName = "Reset Password";
             var homeLink = Constants.AdminClientPort;
             var filePath = Constants.EmailFolderPath;
             var message = FileUtil.GetEmailView(filePath, link, title, description, buttonName, homeLink);
-            await EmailUtil.SendEmailAsync(dbUser.Email, message, "ResetPassword");
+            await EmailUtil.SendEmailAsync(dbUser.Email, message, nameof(ResetPassword));
 
-            return RedirectToAction("Login");
+            return RedirectToAction(nameof(Login));
         }
 
         public async Task<IActionResult> ResetPassword(string id, string token)
@@ -552,7 +552,7 @@ namespace AdminPanel.Controllers
                 return View(passwordViewModel);
             }
 
-            return RedirectToAction("Login");
+            return RedirectToAction(nameof(Login));
         }
 
         #endregion
