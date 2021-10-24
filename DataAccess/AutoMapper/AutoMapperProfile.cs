@@ -35,6 +35,10 @@ namespace DataAccess.AutoMapper
                 .ForMember(x => x.BannerTitle, y => y.MapFrom(x => x.Banner.Title))
                 .ForMember(x => x.BannerDescription, y => y.MapFrom(x => x.Banner.Description))
                 .ForMember(x => x.BannerImage, y => y.MapFrom(x => x.Banner.Image)).ReverseMap();
+
+            CreateMap<UserSocialMedia, UserSocialMediaDto>().ReverseMap();
+
+            CreateMap<AppUser, AppUserDto>().ReverseMap();
         }
     }
 }

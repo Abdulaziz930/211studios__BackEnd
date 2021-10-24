@@ -43,6 +43,16 @@
                                     <h4>Role:</h4>
                                     <p>@user.Role</p>
                                 </div>
+                                @if (user.UserSocials.Count() != 0)
+                                {
+                                    <div class="card-item">
+                                        <h4>Social Medias:</h4>
+                                        @foreach (var userSocial in user.UserSocials)
+                                        {
+                                            <a href="@userSocial.Link" class="pr-2" target="_blank" rel='noreferrer'>@Html.Raw(userSocial.Icon)</a>
+                                        }
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>

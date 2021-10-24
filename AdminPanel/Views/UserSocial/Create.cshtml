@@ -1,0 +1,38 @@
+﻿@model UserSocialMedia
+@{
+    ViewData["Title"] = $"{User.Identity.Name} - add social media";
+}
+
+<div class="section-header">
+    <h1>@User.Identity.Name - add social media</h1>
+</div>
+<div class="section-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <form method="post">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label asp-for="Link">Link</label>
+                            <input asp-for="Link" class="form-control" placeholder="Link">
+                            <span asp-validation-for="Link" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Icon">Icon</label>
+                            <input asp-for="Icon" class="form-control" placeholder="Icon">
+                            <span asp-validation-for="Icon" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="card-footer text-right">
+                        <button class="btn btn-primary">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
+
