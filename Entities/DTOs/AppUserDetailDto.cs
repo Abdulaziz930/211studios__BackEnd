@@ -1,20 +1,16 @@
-﻿using Entities.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace AdminPanel.ViewModels
+namespace Entities.DTOs
 {
-    public class UserDetailViewModel
+    public class AppUserDetailDto
     {
         public string Id { get; set; }
 
         public string FullName { get; set; }
-
-        public string UserName { get; set; }
-
-        public string Email { get; set; }
 
         public string Position { get; set; }
 
@@ -22,8 +18,6 @@ namespace AdminPanel.ViewModels
 
         public string Image { get; set; }
 
-        public string Role { get; set; }
-
-        public List<UserSocialViewModel> UserSocials { get; set; }
+        public List<UserSocialMediaDto> UserSocialMediasDto { get; set; }
     }
 }

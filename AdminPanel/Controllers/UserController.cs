@@ -34,10 +34,11 @@ namespace AdminPanel.Controllers
             if (allUsers.Count > 0 && (ViewBag.PageCount < page || page <= 0))
                 return NotFound();
 
+            int skipCount = (page - 1) * 5;
 
             var users = new List<UserViewModel>();
 
-            foreach (var user in _userManager.Users)
+            foreach (var user in _userManager.Users.Skip(skipCount).Take(5))
             {
                 var userVM = new UserViewModel
                 {
@@ -387,9 +388,21 @@ namespace AdminPanel.Controllers
             if (string.IsNullOrEmpty(id))
                 return BadRequest();
 
-            var dbUser = await _userManager.FindByIdAsync(id);
+            var dbUser = await _userManager.Users.Include(x => x.UserSocialMedias).FirstOrDefaultAsync(x => x.Id == id);
             if (dbUser is null)
                 return NotFound();
+
+            List<UserSocialViewModel> userSocialsVM = new List<UserSocialViewModel>();
+            foreach (var userSocial in dbUser.UserSocialMedias.Where(x => x.IsDeleted == false))
+            {
+                var userSocialVM = new UserSocialViewModel
+                {
+                    Id = userSocial.Id,
+                    Link = userSocial.Link,
+                    Icon = userSocial.Icon
+                };
+                userSocialsVM.Add(userSocialVM);
+            }
 
             var userDetailVM = new UserDetailViewModel
             {
@@ -400,7 +413,8 @@ namespace AdminPanel.Controllers
                 Position = dbUser.Position,
                 Description = dbUser.Description ?? "",
                 Role = (await _userManager.GetRolesAsync(dbUser)).FirstOrDefault(),
-                Image = dbUser.Image
+                Image = dbUser.Image,
+                UserSocials = userSocialsVM
             };
 
             return View(userDetailVM);

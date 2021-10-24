@@ -29,6 +29,7 @@
     <link rel="stylesheet" href="~/assets/css/style.css" />
     <link rel="stylesheet" href="~/assets/css/components.css" />
     <link rel="stylesheet" href="~/assets/css/myStyle.css" />
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 
 <body>
@@ -104,6 +105,12 @@
                                 </li>
                                 <li>
                                     <a class="nav-link" asp-controller="User" asp-action="Create">Create new user</a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" asp-controller="UserSocial" asp-action="Index">Social medias</a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" asp-controller="UserSocial" asp-action="Create">Add social media</a>
                                 </li>
                             </ul>
                         </li>

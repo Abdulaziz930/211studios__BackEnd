@@ -1,0 +1,35 @@
+﻿@model UserSocialViewModel
+@{
+    ViewData["Title"] = $"{User.Identity.Name} - delete social media";
+}
+
+<div class="section-header">
+    <h1>@User.Identity.Name - delete social media</h1>
+</div>
+<div class="section-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="container">
+                    <div class="detail-content" style="padding-top: 20px; padding-bottom: 20px;">
+                        <div class="card-item">
+                            <h4>Link:</h4>
+                            <a href="@Model.Link">@Model.Link</a>
+                        </div>
+                        <div class="card-item">
+                            <h4>Icon:</h4>
+                            <p>@Html.Raw(Model.Icon)</p>
+                        </div>
+                    </div>
+                    <div class="card-footer text-right">
+                        <form method="post">
+                            <button class="btn btn-danger">Delete</button>
+                            <a asp-action="index" class="btn btn-info">Cancle</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
