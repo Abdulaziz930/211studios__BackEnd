@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Business.Abstract;
 using Entities.DTOs;
 using Entities.Models;
 using Microsoft.AspNetCore.Http;
@@ -18,14 +19,17 @@ namespace _211_Studios.Controllers
     public class TeamMemberController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly ITeamMemberBannerService _teamMemberBannerService;
         private readonly IMapper _mapper;
         private readonly ILoggerManager _loggerManager;
 
-        public TeamMemberController(UserManager<AppUser> userManager, IMapper mapper, ILoggerManager loggerManager)
+        public TeamMemberController(UserManager<AppUser> userManager, IMapper mapper
+            , ILoggerManager loggerManager, ITeamMemberBannerService teamMemberBannerService)
         {
             _userManager = userManager;
             _mapper = mapper;
             _loggerManager = loggerManager;
+            _teamMemberBannerService = teamMemberBannerService;
         }
 
         [HttpGet("getTeamMembers")]
@@ -80,6 +84,26 @@ namespace _211_Studios.Controllers
             catch (Exception e)
             {
                 _loggerManager.LogError($"Something went wrong in the {nameof(GetTeamMemberDetail)} action {e}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpGet("getTeamMemberDetailBanner")]
+        public async Task<IActionResult> GetTeamMemberDetailBanner()
+        {
+            try
+            {
+                var teamMemberBanners = await _teamMemberBannerService.GetTeamMembersAsync();
+                if (teamMemberBanners is null)
+                    return NotFound();
+
+                var teamMemberBannerDto = _mapper.Map<TeamMemberBannerDto>(teamMemberBanners[0]);
+
+                return Ok(teamMemberBannerDto);
+            }
+            catch (Exception e)
+            {
+                _loggerManager.LogError($"Something went wrong in the {nameof(GetTeamMemberDetailBanner)} action {e}");
                 return StatusCode(500, "Internal server error");
             }
         }
