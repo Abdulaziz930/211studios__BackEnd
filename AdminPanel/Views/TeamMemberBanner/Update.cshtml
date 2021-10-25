@@ -1,0 +1,54 @@
+﻿@model TeamMemberBanner
+@{
+    ViewData["Title"] = "Update team member item";
+}
+
+<div class="section-header">
+    <h1>Update team member item</h1>
+</div>
+<div class="section-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <form method="post" enctype="multipart/form-data">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label asp-for="Title">Title</label>
+                            <input asp-for="Title" class="form-control" placeholder="Title">
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Description">Description</label>
+                            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Description"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Photo">Image</label>
+                            <input asp-for="Photo" class="form-control" accept="image/*" type="file">
+                            <span asp-validation-for="Photo" class="text-danger"></span>
+                        </div>
+                        <div>
+                            <img src="~/images/@Model.Image" class="img-fluid" id="img-file" style="width: 450px; height: 250px;" />
+                        </div>
+                    </div>
+                    <div class="card-footer text-right">
+                        <button class="btn btn-warning">Update</button>
+                        <a asp-action="index" class="btn btn-info">Cancle</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.querySelector("#Photo").addEventListener("change", function () {
+            let img = document.getElementById("img-file");
+            img.src = URL.createObjectURL(this.files[0]);
+        })
+    </script>
+}
+
