@@ -39,6 +39,8 @@ namespace DataAccess.AutoMapper
             CreateMap<UserSocialMedia, UserSocialMediaDto>().ReverseMap();
 
             CreateMap<AppUser, AppUserDto>().ReverseMap();
+
+            CreateMap<TeamMemberBanner, TeamMemberBannerDto>().ReverseMap();
         }
     }
 }
