@@ -40,8 +40,15 @@ namespace AdminPanel.Controllers
 
         #region Create
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var studios = await _studioService.GetStudiosAsync();
+            if (studios is null)
+                return NotFound();
+
+            if (studios.Count == 1)
+                return BadRequest();
+
             return View();
         }
 
