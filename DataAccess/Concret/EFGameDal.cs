@@ -72,5 +72,19 @@ namespace DataAccess.Concret
                 .OrderByDescending(x => x.GameDetail.LastModificationDate)
                 .Take(takeCount).ToListAsync();
         }
+
+        public async Task<List<Game>> GetGamesByFilteredSkipAndTakeCountAsync(int skipCount, int takeCount, int categoryId)
+        {
+            return await Context.Games.Include(x => x.GameCategories).ThenInclude(x => x.Category)
+                .Where(x => x.IsDeleted == false && x.GameCategories.Any(x => x.Category.IsDeleted == false && x.CategoryId == categoryId))
+                .OrderByDescending(x => x.GameDetail.LastModificationDate).Skip(skipCount).Take(takeCount).ToListAsync();
+        }
+
+        public async Task<List<Game>> GetGamesByCategoryAsync(int categoryId)
+        {
+            return await Context.Games.Include(x => x.GameCategories).ThenInclude(x => x.Category)
+                .Where(x => x.IsDeleted == false && x.GameCategories.Any(x => x.Category.IsDeleted == false && x.CategoryId == categoryId))
+                .ToListAsync();
+        }
     }
 }

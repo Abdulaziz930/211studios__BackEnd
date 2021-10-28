@@ -19,12 +19,14 @@ namespace _211_Studios.Controllers
         private readonly IGameService _gameService;
         private readonly IMapper _mapper;
         private readonly ILoggerManager _loggerManager;
+        private readonly ICategoryService _categoryService;
 
-        public GameController(IGameService gameService, IMapper mapper, ILoggerManager loggerManager)
+        public GameController(IGameService gameService, IMapper mapper, ILoggerManager loggerManager, ICategoryService categoryService)
         {
             _gameService = gameService;
             _mapper = mapper;
             _loggerManager = loggerManager;
+            _categoryService = categoryService;
         }
 
         [HttpGet("getGames/{skipCount}/{takeCount}")]
@@ -60,7 +62,7 @@ namespace _211_Studios.Controllers
         }
 
         [HttpGet("getGamesByCategory/{categoryId}/{gameId}/{takeCount}")]
-        public async Task<IActionResult> GetGamesAsync([FromRoute] int? categoryId, int gameId ,int takeCount = 3)
+        public async Task<IActionResult> GetGamesAsync([FromRoute] int? categoryId, int gameId, int takeCount = 3)
         {
             try
             {
@@ -141,6 +143,102 @@ namespace _211_Studios.Controllers
             catch (Exception e)
             {
                 _loggerManager.LogError($"Something went wrong in the {nameof(GetGame)} action {e}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpGet("getCategories")]
+        public async Task<IActionResult> GetCategories()
+        {
+            try
+            {
+                var categories = await _categoryService.GetCategoriesAsync();
+                if (categories is null)
+                    return NotFound();
+
+                var categoriesDto = _mapper.Map<List<CategoryDto>>(categories);
+
+                return Ok(categoriesDto);
+            }
+            catch (Exception e)
+            {
+                _loggerManager.LogError($"Something went wrong in the {nameof(GetCategories)} action {e}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpGet("getGamesCount")]
+        public async Task<IActionResult> GetGamesCount()
+        {
+            try
+            {
+                var games = await _gameService.GetGamesAsync();
+                if (games is null)
+                    return NotFound();
+
+                return Ok(games.Count);
+            }
+            catch (Exception e)
+            {
+                _loggerManager.LogError($"Something went wrong in the {nameof(GetGamesCount)} action {e}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpGet]
+        [Route("getGamesByCategory/{skipCount}/{takeCount}")]
+        public async Task<IActionResult> GetGamesByCategory([FromRoute] int skipCount, int takeCount, [FromQuery] int? categoryId)
+        {
+            List<Game> games = default;
+
+            if (categoryId is null)
+            {
+                games = await _gameService.GetGamesAsync(skipCount, takeCount);
+                if (games is null)
+                    return NotFound();
+            }
+            else
+            {
+                games = await _gameService.GetGamesByCategoryAsync(skipCount, takeCount, categoryId.Value);
+                if (games is null)
+                    return NotFound();
+            }
+
+
+            var gamesDto = new List<GameDto>();
+            foreach (var game in games)
+            {
+                var gameDto = new GameDto
+                {
+                    Id = game.Id,
+                    Name = game.Name,
+                    Description = game.Description,
+                    Image = game.Image,
+                    Category = _mapper.Map<CategoryDto>(game.GameCategories.FirstOrDefault(x => x.GameId == game.Id).Category)
+                };
+                gamesDto.Add(gameDto);
+            }
+
+            return Ok(gamesDto);
+        }
+
+        [HttpGet("getGamesCount/{categoryId}")]
+        public async Task<IActionResult> GetGamesCount([FromRoute] int? categoryId)
+        {
+            try
+            {
+                if (categoryId is null)
+                    return BadRequest();
+
+                var games = await _gameService.GetGamesByCategoryAsync(categoryId.Value);
+                if (games is null)
+                    return NotFound();
+
+                return Ok(games.Count);
+            }
+            catch (Exception e)
+            {
+                _loggerManager.LogError($"Something went wrong in the {nameof(GetGamesCount)} action {e}");
                 return StatusCode(500, "Internal server error");
             }
         }

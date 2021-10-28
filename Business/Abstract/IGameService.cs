@@ -19,6 +19,10 @@ namespace Business.Abstract
         Task<List<Game>> GetGamesAsync(int takeCount);
 
         Task<List<Game>> GetGamesAsync(int takeCount, int categoryId, int gameId);
+
+        Task<List<Game>> GetGamesByCategoryAsync(int skipCount, int takeCount, int categoryId);
+
+        Task<List<Game>> GetGamesByCategoryAsync(int categoryId);
         
         Task<List<Game>> GetGamesAsync(int skipCount, int takeCount);
 
