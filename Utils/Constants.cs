@@ -22,6 +22,10 @@ namespace Utils
 
         public static string EmailFolderPath = "";
 
+        public static string ContactEmailFolderPath = "";
+
         public static string AdminClientPort = "";
+
+        public static string ClientPort = "";
     }
 }

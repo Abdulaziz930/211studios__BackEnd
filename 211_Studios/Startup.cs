@@ -100,6 +100,16 @@ namespace _211_Studios
 
             #endregion
 
+            #region Constants
+
+            Constants.EmailAdress = Configuration["Gmail:Address"];
+            Constants.EmailPassword = Configuration["Gmail:Password"];
+            Constants.ContactEmailFolderPath = Configuration["Gmail:FolderPath"];
+
+            Constants.ClientPort = Configuration["ClientPort:Port"];
+
+            #endregion
+
             #region Swagger
 
             services.AddSwaggerGen(c =>
