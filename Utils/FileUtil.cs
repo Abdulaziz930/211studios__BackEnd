@@ -73,5 +73,16 @@ namespace Utils
 
             return mailText;
         }
+
+        public static string GetContactEmailView(string filePath, string title, string description, string homeLink)
+        {
+            StreamReader streamReader = new StreamReader(filePath);
+            string mailText = streamReader.ReadToEnd();
+            streamReader.Close();
+
+            mailText = mailText.Replace("{title}", title).Replace("{description}", description).Replace("{homeLink}", homeLink);
+
+            return mailText;
+        }
     }
 }
