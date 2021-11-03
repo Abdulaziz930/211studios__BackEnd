@@ -49,5 +49,7 @@ namespace DataAccess.Concret
         public DbSet<UserSocialMedia> UserSocialMedias { get; set; }
 
         public DbSet<TeamMemberBanner> TeamMemberBanners { get; set; }
+
+        public DbSet<Blog> Blogs { get; set; }
     }
 }
