@@ -27,6 +27,8 @@ namespace Entities.Models
 
         public ICollection<UserSocialMedia> UserSocialMedias { get; set; }
 
+        public ICollection<Blog> Blogs { get; set; }
+
         [NotMapped]
         public IFormFile Photo { get; set; }
     }

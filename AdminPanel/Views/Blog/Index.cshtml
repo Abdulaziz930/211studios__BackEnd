@@ -1,20 +1,20 @@
 ﻿
 @{
-    ViewData["Title"] = "Games";
-    List<GameViewModel> games = Model;
+    ViewData["Title"] = "Blogs";
+    List<BlogViewModel> blogs = Model;
 }
 
 <div class="section-header">
-    <h1>Games</h1>
+    <h1>Blogs</h1>
 </div>
 <div class="section-body">
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    @if (games.Count == 0 || games == null)
+                    @if (blogs.Count == 0 || blogs == null)
                     {
-                        <div class="alert alert-warning">There are no game yet, please add game</div>
+                        <div class="alert alert-warning">There are no blog item yet, please add blog item</div>
                     }
                     else
                     {
@@ -22,24 +22,26 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Image</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Category Name</th>
+                                    <th scope="col">Title</th>
+                                    <th scope="col">Creation Date</th>
+                                    <th scope="col">Last Modification Date</th>
                                     <th scope="col">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var game in games)
+                                @foreach (var blog in blogs)
                                 {
                                     <tr>
                                         <td>
-                                            <img src="~/images/@game.Image" class="img-fluid rounded-circle mt-3" style="width: 100px; height: 100px;" />
+                                            <img src="~/images/@blog.Image" class="img-fluid rounded-circle mt-3" style="width: 100px; height: 100px;" />
                                         </td>
-                                        <td>@game.Name</td>
-                                        <td>@game.CategoryName</td>
+                                        <td>@blog.Title</td>
+                                        <td>@blog.CreationDate</td>
+                                        <td>@blog.LastModificationDate</td>
                                         <td>
-                                            <a asp-action="Detail" asp-route-id="@game.Id" class="btn btn-success">Detail</a>
-                                            <a asp-action="Update" asp-route-id="@game.Id" class="btn btn-warning">Update</a>
-                                            <a asp-action="Delete" asp-route-id="@game.Id" class="btn btn-danger">Delete</a>
+                                            <a asp-action="Detail" asp-route-id="@blog.Id" class="btn btn-success">Detail</a>
+                                            <a asp-action="Update" asp-route-id="@blog.Id" class="btn btn-warning">Update</a>
+                                            <a asp-action="Delete" asp-route-id="@blog.Id" class="btn btn-danger">Delete</a>
                                         </td>
                                     </tr>
                                 }

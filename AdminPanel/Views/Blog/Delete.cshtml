@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewData["Title"] = "Delete blog";
+    BlogDetailViewModel blog = Model;
+}
+
+<div class="section-header">
+    <h1>Delete blog</h1>
+</div>
+<div class="section-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="container">
+                    <div class="detail-content" style="padding-top: 20px; padding-bottom: 20px;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="img-box">
+                                    <img src="~/images/@blog.Image" class="img-fluid" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card-item">
+                                    <h4>Title:</h4>
+                                    <p>@blog.Title</p>
+                                </div>
+                                <div class="card-item">
+                                    <h4>Content:</h4>
+                                    <p>@Html.Raw(blog.Content)</p>
+                                </div>
+                                <div class="card-item">
+                                    <h4>Creation date:</h4>
+                                    <p>@blog.CreationDate.ToString("dd/MM/yyy hh:mm:ss")</p>
+                                </div>
+                                <div class="card-item">
+                                    <h4>Last modification date:</h4>
+                                    <p>@blog.LastModificationDate.ToString("dd/MM/yyy hh:mm:ss")</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-right">
+                        <form method="post">
+                            <button class="btn btn-danger">Delete</button>
+                            <a asp-action="index" class="btn btn-info">Cancle</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
