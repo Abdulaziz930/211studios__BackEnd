@@ -12,8 +12,12 @@ namespace DataAccess.Abstract
     {
         Task<List<Blog>> GetBlogsBySkipAndTakeCountAsync(string userId, int skipCount, int takeCount);
 
+        Task<List<Blog>> GetBlogsBySkipAndTakeCountAsync(int skipCount, int takeCount);
+
         Task<Blog> GetBlogWithIncludeAsync(int id);
 
         Task<List<Blog>> GetUserBlogsAsync(string userId);
+
+        Task<List<Blog>> SearchBlogAsync(string search);
     }
 }

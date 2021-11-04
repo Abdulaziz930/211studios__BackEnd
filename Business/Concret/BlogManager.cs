@@ -35,7 +35,7 @@ namespace Business.Concret
 
         public async Task<List<Blog>> GetBlogsAsync()
         {
-            return await _blogDal.GetAllAsync();
+            return await _blogDal.GetAllAsync(x => x.IsDeleted == false);
         }
 
         public async Task<List<Blog>> GetBlogsAsync(string userId, int skipCount, int takeCount)
@@ -48,9 +48,19 @@ namespace Business.Concret
             return await _blogDal.GetUserBlogsAsync(userId);
         }
 
+        public async Task<List<Blog>> GetBlogsAsync(int skipCount, int takeCount)
+        {
+            return await _blogDal.GetBlogsBySkipAndTakeCountAsync(skipCount, takeCount);
+        }
+
         public async Task<Blog> GetBlogWithIncludeAsync(int id)
         {
             return await _blogDal.GetBlogWithIncludeAsync(id);
+        }
+
+        public async Task<List<Blog>> SearchBlogAsync(string search)
+        {
+            return await _blogDal.SearchBlogAsync(search);
         }
 
         public async Task<bool> UpdateAsync(Blog blog)
