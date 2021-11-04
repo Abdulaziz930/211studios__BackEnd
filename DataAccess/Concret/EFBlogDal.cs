@@ -23,6 +23,13 @@ namespace DataAccess.Concret
                 .Skip(skipCount).Take(takeCount).ToListAsync();
         }
 
+        public async Task<List<Blog>> GetBlogsBySkipAndTakeCountAsync(int skipCount, int takeCount)
+        {
+            return await Context.Blogs.Include(x => x.AppUser)
+                .Where(x => x.IsDeleted == false && x.AppUser.IsActive).OrderByDescending(x => x.LastModificationDate)
+                .Skip(skipCount).Take(takeCount).ToListAsync();
+        }
+
         public async Task<Blog> GetBlogWithIncludeAsync(int id)
         {
             return await Context.Blogs.Include(x => x.AppUser).FirstOrDefaultAsync(x => x.Id == id && x.IsDeleted == false && x.AppUser.IsActive);
@@ -32,6 +39,13 @@ namespace DataAccess.Concret
         {
             return await Context.Blogs.Include(x => x.AppUser)
                 .Where(x => x.IsDeleted == false && x.AppUser.Id == userId && x.AppUser.IsActive).ToListAsync();
+        }
+
+        public async Task<List<Blog>> SearchBlogAsync(string search)
+        {
+            return await Context.Blogs.Include(x => x.AppUser)
+                .Where(x => x.Title.Contains(search) && x.IsDeleted == false && x.AppUser.IsActive == true)
+                .OrderByDescending(x => x.LastModificationDate).ToListAsync();
         }
     }
 }

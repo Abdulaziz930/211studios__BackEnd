@@ -41,6 +41,8 @@ namespace DataAccess.AutoMapper
             CreateMap<AppUser, AppUserDto>().ReverseMap();
 
             CreateMap<TeamMemberBanner, TeamMemberBannerDto>().ReverseMap();
+
+            CreateMap<Blog, BlogDto>().ForMember(x => x.AppUserDto, y => y.MapFrom(x => x.AppUser)).ReverseMap();
         }
     }
 }

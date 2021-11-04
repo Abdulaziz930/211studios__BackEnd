@@ -17,7 +17,11 @@ namespace Business.Abstract
 
         Task<List<Blog>> GetBlogsAsync(string userId, int skipCount, int takeCount);
 
+        Task<List<Blog>> GetBlogsAsync(int skipCount, int takeCount);
+
         Task<List<Blog>> GetBlogsAsync(string userId);
+
+        Task<List<Blog>> SearchBlogAsync(string search);
 
         Task<bool> AddAsync(Blog blog);
 
