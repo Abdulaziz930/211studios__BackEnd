@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Utils;
+using static Utils.CommonEnums;
 
 namespace AdminPanel.Controllers
 {
@@ -86,20 +87,8 @@ namespace AdminPanel.Controllers
                 return View();
             }
 
-            var imageFolderPathList = new List<string>()
-            {
-                Constants.ImageFolderPath,
-                Constants.FrontImageFolderPath
-            };
-
-            var bannerImageFolderPathList = new List<string>()
-            {
-                Constants.ImageFolderPath,
-                Constants.FrontImageFolderPath
-            };
-
-            var imageFileName = await FileUtil.GenerateFileAsync(imageFolderPathList, studio.Photo);
-            var bannerImageFileName = await FileUtil.GenerateFileAsync(bannerImageFolderPathList, studio.Banner.Photo);
+            var imageFileName = await FileUtil.GenerateFileAsync(Constants.ImageFolderPath, studio.Photo, FileType.Image);
+            var bannerImageFileName = await FileUtil.GenerateFileAsync(Constants.ImageFolderPath, studio.Banner.Photo, FileType.Image);
 
             studio.Image = imageFileName;
             studio.Banner.Image = bannerImageFileName;
@@ -160,29 +149,7 @@ namespace AdminPanel.Controllers
                     return View(dbStudio);
                 }
 
-                var paths = new List<string>();
-
-                var backPath = Path.Combine(Constants.ImageFolderPath, dbStudio.Image);
-                var frontPath = Path.Combine(Constants.FrontImageFolderPath, dbStudio.Image);
-
-                paths.Add(backPath);
-                paths.Add(frontPath);
-
-                foreach (var path in paths)
-                {
-                    if (System.IO.File.Exists(path))
-                    {
-                        System.IO.File.Delete(path);
-                    }
-                }
-
-                var imageFolderPathList = new List<string>()
-                {
-                    Constants.ImageFolderPath,
-                    Constants.FrontImageFolderPath
-                };
-
-                imageFileName = await FileUtil.GenerateFileAsync(imageFolderPathList, studio.Photo);
+                imageFileName = await FileUtil.UpdateFileAsync(dbStudio.Image, Constants.ImageFolderPath, studio.Photo, FileType.Image);
             }
 
             if (studio.Banner.Photo != null)
@@ -193,29 +160,8 @@ namespace AdminPanel.Controllers
                     return View(dbStudio);
                 }
 
-                var paths = new List<string>();
-
-                var backPath = Path.Combine(Constants.ImageFolderPath, dbStudio.Image);
-                var frontPath = Path.Combine(Constants.FrontImageFolderPath, dbStudio.Image);
-
-                paths.Add(backPath);
-                paths.Add(frontPath);
-
-                foreach (var path in paths)
-                {
-                    if (System.IO.File.Exists(path))
-                    {
-                        System.IO.File.Delete(path);
-                    }
-                }
-
-                var bannerImageFolderPathList = new List<string>()
-                {
-                    Constants.ImageFolderPath,
-                    Constants.FrontImageFolderPath
-                };
-
-                bannerImageFileName = await FileUtil.GenerateFileAsync(bannerImageFolderPathList, studio.Banner.Photo);
+                bannerImageFileName = await FileUtil.UpdateFileAsync(dbStudio.Banner.Image, Constants.ImageFolderPath
+                    , studio.Banner.Photo, FileType.Image);
             }
 
             if (!ModelState.IsValid)

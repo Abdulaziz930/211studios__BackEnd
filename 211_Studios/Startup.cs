@@ -29,13 +29,15 @@ namespace _211_Studios
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             LogManager.LoadConfiguration(Path.Combine(Directory.GetCurrentDirectory(), "nlog.config"));
             Configuration = configuration;
+            _environment = environment;
         }
 
         public IConfiguration Configuration { get; }
+        private readonly IWebHostEnvironment _environment;
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -132,6 +134,8 @@ namespace _211_Studios
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseStaticFiles();
 
             app.UseAuthorization();
 

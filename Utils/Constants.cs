@@ -12,10 +12,6 @@ namespace Utils
 
         public static string VideoFolderPath = "";
 
-        public static string FrontImageFolderPath = "";
-
-        public static string FrontVideoFolderPath = "";
-
         public static string EmailAdress = "";
 
         public static string EmailPassword = "";
@@ -27,5 +23,13 @@ namespace Utils
         public static string AdminClientPort = "";
 
         public static string ClientPort = "";
+        
+        public static string ApiKey = "";
+        
+        public static string Bucket = "";
+        
+        public static string AuthEmail = "";
+
+        public static string AuthPassword = "";
     }
 }

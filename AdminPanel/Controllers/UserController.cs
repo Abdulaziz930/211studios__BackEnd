@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Utils;
+using static Utils.CommonEnums;
 
 namespace AdminPanel.Controllers
 {
@@ -93,13 +94,7 @@ namespace AdminPanel.Controllers
                 return View();
             }
 
-            var imageFolderPathList = new List<string>()
-            {
-                Constants.ImageFolderPath,
-                Constants.FrontImageFolderPath
-            };
-
-            var imageFileName = await FileUtil.GenerateFileAsync(imageFolderPathList, createUserVM.Photo);
+            var imageFileName = await FileUtil.GenerateFileAsync(Constants.ImageFolderPath, createUserVM.Photo, FileType.Image);
 
             var newUser = new AppUser
             {
@@ -179,29 +174,7 @@ namespace AdminPanel.Controllers
                     return View();
                 }
 
-                var paths = new List<string>();
-
-                var backPath = Path.Combine(Constants.ImageFolderPath, dbUser.Image);
-                var frontPath = Path.Combine(Constants.FrontImageFolderPath, dbUser.Image);
-
-                paths.Add(backPath);
-                paths.Add(frontPath);
-
-                foreach (var path in paths)
-                {
-                    if (System.IO.File.Exists(path))
-                    {
-                        System.IO.File.Delete(path);
-                    }
-                }
-
-                var imageFolderPathList = new List<string>()
-                {
-                    Constants.ImageFolderPath,
-                    Constants.FrontImageFolderPath
-                };
-
-                imageFileName = await FileUtil.GenerateFileAsync(imageFolderPathList, updateUserVM.Photo);
+                imageFileName = await FileUtil.UpdateFileAsync(dbUser.Image, Constants.ImageFolderPath, updateUserVM.Photo, FileType.Image);
             }
 
             if (!ModelState.IsValid)

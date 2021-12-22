@@ -79,14 +79,16 @@ namespace AdminPanel
             Constants.ImageFolderPath = Path.Combine(_environment.WebRootPath, "images");
             Constants.VideoFolderPath = Path.Combine(_environment.WebRootPath, "videos");
 
-            Constants.FrontImageFolderPath = Configuration["FrontFolderPath:ImageFolderPath"];
-            Constants.FrontVideoFolderPath = Configuration["FrontFolderPath:VideoFolderPath"]; ;
-
             Constants.EmailAdress = Configuration["Gmail:Address"];
             Constants.EmailPassword = Configuration["Gmail:Password"];
             Constants.EmailFolderPath = Configuration["Gmail:FolderPath"];
 
             Constants.AdminClientPort = Configuration["ClientPort:Port"];
+
+            Constants.ApiKey = Configuration["FireBase:ApiKey"];
+            Constants.Bucket = Configuration["FireBase:Bucket"];
+            Constants.AuthEmail = Configuration["FireBase:AuthEmail"];
+            Constants.AuthPassword = Configuration["FireBase:AuthPassword"];
 
             #endregion
         }
