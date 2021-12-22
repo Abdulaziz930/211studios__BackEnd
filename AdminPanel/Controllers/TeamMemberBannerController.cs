@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Utils;
+using static Utils.CommonEnums;
 
 namespace AdminPanel.Controllers
 {
@@ -77,13 +78,7 @@ namespace AdminPanel.Controllers
                 return View();
             }
 
-            var imageFolderPathList = new List<string>()
-            {
-                Constants.ImageFolderPath,
-                Constants.FrontImageFolderPath
-            };
-
-            var imageFileName = await FileUtil.GenerateFileAsync(imageFolderPathList, teamMemberBanner.Photo);
+            var imageFileName = await FileUtil.GenerateFileAsync(Constants.ImageFolderPath, teamMemberBanner.Photo, FileType.Image);
 
             teamMemberBanner.Image = imageFileName;
 
@@ -140,29 +135,8 @@ namespace AdminPanel.Controllers
                     return View(dbTeamMemberBanner);
                 }
 
-                var paths = new List<string>();
-
-                var backPath = Path.Combine(Constants.ImageFolderPath, dbTeamMemberBanner.Image);
-                var frontPath = Path.Combine(Constants.FrontImageFolderPath, dbTeamMemberBanner.Image);
-
-                paths.Add(backPath);
-                paths.Add(frontPath);
-
-                foreach (var path in paths)
-                {
-                    if (System.IO.File.Exists(path))
-                    {
-                        System.IO.File.Delete(path);
-                    }
-                }
-
-                var imageFolderPathList = new List<string>()
-                {
-                    Constants.ImageFolderPath,
-                    Constants.FrontImageFolderPath
-                };
-
-                imageFileName = await FileUtil.GenerateFileAsync(imageFolderPathList, teamMemberBanner.Photo);
+                imageFileName = await FileUtil.UpdateFileAsync(dbTeamMemberBanner.Image, Constants.ImageFolderPath
+                    , teamMemberBanner.Photo, FileType.Image);
             }
 
             if (!ModelState.IsValid)

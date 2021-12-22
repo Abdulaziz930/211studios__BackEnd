@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Utils;
+using static Utils.CommonEnums;
 
 namespace AdminPanel.Controllers
 {
@@ -116,20 +117,8 @@ namespace AdminPanel.Controllers
                 return View();
             }
 
-            var imageFolderPathList = new List<string>()
-            {
-                Constants.ImageFolderPath,
-                Constants.FrontImageFolderPath
-            };
-
-            var videoFolderPathList = new List<string>()
-            {
-                Constants.VideoFolderPath,
-                Constants.FrontVideoFolderPath
-            };
-
-            var imageFileName = await FileUtil.GenerateFileAsync(imageFolderPathList, game.Photo);
-            var videoFileName = await FileUtil.GenerateFileAsync(videoFolderPathList, game.GameDetail.VideoFile);
+            var imageFileName = await FileUtil.GenerateFileAsync(Constants.ImageFolderPath, game.Photo, FileType.Image);
+            var videoFileName = await FileUtil.GenerateFileAsync(Constants.VideoFolderPath, game.GameDetail.VideoFile, FileType.Video);
 
             game.Image = imageFileName;
             game.GameDetail.Video = videoFileName;
@@ -241,7 +230,8 @@ namespace AdminPanel.Controllers
             if (dbGame is null)
                 return NotFound();
 
-            var isExists = await _gameService.CheckGameAsync(x => x.IsDeleted == false && x.Name.ToLower() == game.Name.ToLower() && x.Id != game.Id);
+            var isExists = await _gameService.CheckGameAsync(x => x.IsDeleted == false 
+                                                && x.Name.ToLower() == game.Name.ToLower() && x.Id != game.Id);
             if (isExists)
             {
                 ModelState.AddModelError("Name", "There is a game with this name");
@@ -265,29 +255,7 @@ namespace AdminPanel.Controllers
                     return View(dbGame);
                 }
 
-                var paths = new List<string>();
-
-                var backPath = Path.Combine(Constants.ImageFolderPath, dbGame.Image);
-                var frontPath = Path.Combine(Constants.FrontImageFolderPath, dbGame.Image);
-
-                paths.Add(backPath);
-                paths.Add(frontPath);
-
-                foreach (var path in paths)
-                {
-                    if (System.IO.File.Exists(path))
-                    {
-                        System.IO.File.Delete(path);
-                    }
-                }
-
-                var imageFolderPathList = new List<string>()
-                {
-                    Constants.ImageFolderPath,
-                    Constants.FrontImageFolderPath
-                };
-
-                imageFileName = await FileUtil.GenerateFileAsync(imageFolderPathList, game.Photo);
+                imageFileName = await FileUtil.UpdateFileAsync(dbGame.Image, Constants.ImageFolderPath, game.Photo, FileType.Image);
             }
 
             if (game.GameDetail.VideoFile != null)
@@ -298,29 +266,8 @@ namespace AdminPanel.Controllers
                     return View(dbGame);
                 }
 
-                var paths = new List<string>();
-
-                var backPath = Path.Combine(Constants.VideoFolderPath, dbGame.Image);
-                var frontPath = Path.Combine(Constants.FrontVideoFolderPath, dbGame.Image);
-
-                paths.Add(backPath);
-                paths.Add(frontPath);
-
-                foreach (var path in paths)
-                {
-                    if (System.IO.File.Exists(path))
-                    {
-                        System.IO.File.Delete(path);
-                    }
-                }
-
-                var videoFolderPathList = new List<string>()
-                {
-                    Constants.VideoFolderPath,
-                    Constants.FrontVideoFolderPath
-                };
-
-                videoFileName = await FileUtil.GenerateFileAsync(videoFolderPathList, game.GameDetail.VideoFile);
+                videoFileName = await FileUtil.UpdateFileAsync(dbGame.GameDetail.Video, Constants.VideoFolderPath
+                    , game.GameDetail.VideoFile, FileType.Video);
             }
 
             if (!ModelState.IsValid)
@@ -439,37 +386,8 @@ namespace AdminPanel.Controllers
 
             game.IsDeleted = true;
 
-            var imagePaths = new List<string>();
-
-            var imageBackPath = Path.Combine(Constants.ImageFolderPath, game.Image);
-            var imageFrontPath = Path.Combine(Constants.FrontImageFolderPath, game.Image);
-
-            imagePaths.Add(imageBackPath);
-            imagePaths.Add(imageFrontPath);
-
-            foreach (var path in imagePaths)
-            {
-                if (System.IO.File.Exists(path))
-                {
-                    System.IO.File.Delete(path);
-                }
-            }
-
-            var videoPaths = new List<string>();
-
-            var videoBackPath = Path.Combine(Constants.VideoFolderPath, game.GameDetail.Video);
-            var videoFrontPath = Path.Combine(Constants.FrontVideoFolderPath, game.GameDetail.Video);
-
-            videoPaths.Add(videoBackPath);
-            videoPaths.Add(videoFrontPath);
-
-            foreach (var path in videoPaths)
-            {
-                if (System.IO.File.Exists(path))
-                {
-                    System.IO.File.Delete(path);
-                }
-            }
+            await FileUtil.DeleteFileAsync(game.Image, FileType.Image);
+            await FileUtil.DeleteFileAsync(game.GameDetail.Video, FileType.Video);
 
             await _gameService.UpdateAsync(game);
 

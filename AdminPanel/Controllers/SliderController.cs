@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Utils;
+using static Utils.CommonEnums;
 
 namespace AdminPanel.Controllers
 {
@@ -77,7 +78,7 @@ namespace AdminPanel.Controllers
                 return View();
             }
 
-            var fileName = await FileUtil.GenerateFileAsync(Constants.ImageFolderPath, slider.Photo);
+            var fileName = await FileUtil.GenerateFileAsync(Constants.ImageFolderPath, slider.Photo, FileType.Image);
 
             slider.Image = fileName;
 
@@ -140,14 +141,7 @@ namespace AdminPanel.Controllers
                     return View();
                 }
 
-                var path = Path.Combine(Constants.ImageFolderPath, dbSlider.Image);
-
-                if (System.IO.File.Exists(path))
-                {
-                    System.IO.File.Delete(path);
-                }
-
-                fileName = await FileUtil.GenerateFileAsync(Constants.ImageFolderPath, slider.Photo);
+                fileName = await FileUtil.UpdateFileAsync(dbSlider.Image, Constants.ImageFolderPath, slider.Photo, FileType.Image);
             }
 
             if (!ModelState.IsValid)
@@ -201,12 +195,7 @@ namespace AdminPanel.Controllers
 
             slider.IsDeleted = true;
 
-            var path = Path.Combine(Constants.ImageFolderPath, slider.Image);
-
-            if (System.IO.File.Exists(path))
-            {
-                System.IO.File.Delete(path);
-            }
+            await FileUtil.DeleteFileAsync(slider.Image, FileType.Image);
 
             await _sliderService.UpdateAsync(slider);
 

@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Utils;
+using static Utils.CommonEnums;
 
 namespace AdminPanel.Controllers
 {
@@ -88,13 +89,7 @@ namespace AdminPanel.Controllers
                 return View();
             }
 
-            var imageFolderPathList = new List<string>()
-            {
-                Constants.ImageFolderPath,
-                Constants.FrontImageFolderPath
-            };
-
-            var imageFileName = await FileUtil.GenerateFileAsync(imageFolderPathList, blog.Photo);
+            var imageFileName = await FileUtil.GenerateFileAsync(Constants.ImageFolderPath, blog.Photo, FileType.Image);
 
             blog.Image = imageFileName;
 
@@ -182,29 +177,7 @@ namespace AdminPanel.Controllers
                     return View(dbBlog);
                 }
 
-                var paths = new List<string>();
-
-                var backPath = Path.Combine(Constants.ImageFolderPath, dbBlog.Image);
-                var frontPath = Path.Combine(Constants.FrontImageFolderPath, dbBlog.Image);
-
-                paths.Add(backPath);
-                paths.Add(frontPath);
-
-                foreach (var path in paths)
-                {
-                    if (System.IO.File.Exists(path))
-                    {
-                        System.IO.File.Delete(path);
-                    }
-                }
-
-                var imageFolderPathList = new List<string>()
-                {
-                    Constants.ImageFolderPath,
-                    Constants.FrontImageFolderPath
-                };
-
-                imageFileName = await FileUtil.GenerateFileAsync(imageFolderPathList, blogVM.Photo);
+                imageFileName = await FileUtil.UpdateFileAsync(dbBlog.Image, Constants.ImageFolderPath, blogVM.Photo, FileType.Image);
             }
 
             if (!ModelState.IsValid)
@@ -276,21 +249,7 @@ namespace AdminPanel.Controllers
 
             blog.IsDeleted = true;
 
-            var imagePaths = new List<string>();
-
-            var imageBackPath = Path.Combine(Constants.ImageFolderPath, blog.Image);
-            var imageFrontPath = Path.Combine(Constants.FrontImageFolderPath, blog.Image);
-
-            imagePaths.Add(imageBackPath);
-            imagePaths.Add(imageFrontPath);
-
-            foreach (var path in imagePaths)
-            {
-                if (System.IO.File.Exists(path))
-                {
-                    System.IO.File.Delete(path);
-                }
-            }
+            await FileUtil.DeleteFileAsync(blog.Image, FileType.Image);
 
             await _blogService.UpdateAsync(blog);
 
