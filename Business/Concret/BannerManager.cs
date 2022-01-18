@@ -4,6 +4,7 @@ using Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,9 +24,19 @@ namespace Business.Concret
             return await _bannerDal.AddAsync(banner);
         }
 
+        public async Task<bool> CheckBannerAsync(Expression<Func<Banner, bool>> filter)
+        {
+            return await _bannerDal.CheckBannerAsync(filter);
+        }
+
         public async Task<bool> DeleteAsync(int id)
         {
             return await _bannerDal.DeleteAsync(new Banner { Id = id });
+        }
+
+        public async Task<List<Banner>> GetAllBannersAsync()
+        {
+            return await _bannerDal.GetAllBannersAsync();
         }
 
         public async Task<Banner> GetBannerAsync(string pageName)
@@ -41,6 +52,11 @@ namespace Business.Concret
         public async Task<List<Banner>> GetBannersAsync()
         {
             return await _bannerDal.GetAllAsync(x => x.IsDeleted == false);
+        }
+
+        public async Task<Banner> GetBannerWithIncludeAsync(int id)
+        {
+            return await _bannerDal.GetBannerWithIncludeAsync(id);
         }
 
         public async Task<bool> UpdateAsync(Banner banner)

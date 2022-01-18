@@ -24,6 +24,8 @@ namespace Entities.Models
 
         public bool IsDeleted { get; set; }
 
+        public DateTime LastModificationDate { get; set; }
+
         [ForeignKey("Menu")]
         public int MenuId { get; set; }
 
