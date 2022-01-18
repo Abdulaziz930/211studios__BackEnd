@@ -17,6 +17,10 @@ namespace AdminPanel.ViewModels
 
         public string Video { get; set; }
 
+        public DateTime RelaseDate { get; set; }
+
+        public DateTime? LastUpdateDate { get; set; }
+
         public DateTime CreationDate { get; set; }
 
         public DateTime LastModificationDate { get; set; }

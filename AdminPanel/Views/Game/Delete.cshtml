@@ -56,6 +56,17 @@
                                     </ul>
                                 </div>
                                 <div class="card-item">
+                                    <h4>Relase date:</h4>
+                                    <p>@gameDetail.RelaseDate.ToString("dd/MM/yyy hh:mm:ss")</p>
+                                </div>
+                                @if (gameDetail.LastUpdateDate != null)
+                                {
+                                    <div class="card-item">
+                                        <h4>Last Update date:</h4>
+                                        <p>@gameDetail.LastUpdateDate.Value.ToString("dd/MM/yyy hh:mm:ss")</p>
+                                    </div>
+                                }
+                                <div class="card-item">
                                     <h4>Creation date:</h4>
                                     <p>@gameDetail.CreationDate.ToString("dd/MM/yyy hh:mm:ss")</p>
                                 </div>

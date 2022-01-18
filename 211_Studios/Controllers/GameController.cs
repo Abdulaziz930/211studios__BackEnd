@@ -133,8 +133,8 @@ namespace _211_Studios.Controllers
                     Description = game.Description,
                     Image = game.Image,
                     Video = game.GameDetail.Video,
-                    CreationDate = game.GameDetail.CreationDate,
-                    LastModificationDate = game.GameDetail.LastModificationDate,
+                    RelaseDate = game.GameDetail.RelaseDate,
+                    LastUpdateDate = game.GameDetail.LastUpdateDate,
                     Size = game.GameDetail.Size,
                     Categories = categoriesDto,
                     Platforms = platformsDto

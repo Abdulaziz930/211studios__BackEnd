@@ -28,6 +28,16 @@
                             <input asp-for="GameDetail.Size" class="form-control" placeholder="Size">
                             <span asp-validation-for="GameDetail.Size" class="text-danger"></span>
                         </div>
+                        <div class="form-group">
+                            <label asp-for="GameDetail.RelaseDate">Relase Date</label>
+                            <input asp-for="GameDetail.RelaseDate" class="form-control" placeholder="Relase Date *">
+                            <span asp-validation-for="GameDetail.RelaseDate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="GameDetail.LastUpdateDate">Relase Date</label>
+                            <input asp-for="GameDetail.LastUpdateDate" class="form-control" placeholder="Last Update Date">
+                            <span asp-validation-for="GameDetail.LastUpdateDate" class="text-danger"></span>
+                        </div>
                         <div class="form-group" id="categoriesInput">
                             <label>Categories</label>
                             <select class="form-control" name="CategoriesId" id="categories" multiple>
