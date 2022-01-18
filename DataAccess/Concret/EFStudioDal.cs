@@ -41,7 +41,7 @@ namespace DataAccess.Concret
 
         public async Task<Studio> GetStudioWithIncludeAsync()
         {
-            return await Context.Studios.Include(x => x.Banner).FirstOrDefaultAsync(x => x.Banner.IsDeleted == false);
+            return await Context.Studios.FirstOrDefaultAsync();
         }
     }
 }

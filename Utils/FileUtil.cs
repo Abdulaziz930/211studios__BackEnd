@@ -137,5 +137,26 @@ namespace Utils
                 .Child(fileName)
                 .DeleteAsync();
         }
+
+        public static async Task<string> FireBaseGetAsync(string fileName, FileType fileType)
+        {
+            var auth = new FirebaseAuthProvider(new FirebaseConfig(Constants.ApiKey));
+            var a = await auth.SignInWithEmailAndPasswordAsync(Constants.AuthEmail, Constants.AuthPassword);
+
+            var cancellation = new CancellationTokenSource();
+
+            var task = new FirebaseStorage(
+                Constants.Bucket,
+                new FirebaseStorageOptions
+                {
+                    AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                    ThrowOnCancel = true
+                })
+                .Child(fileType == FileType.Image ? "images" : "videos")
+                .Child(fileName)
+                .GetDownloadUrlAsync();
+
+            return await task;
+        }
     }
 }

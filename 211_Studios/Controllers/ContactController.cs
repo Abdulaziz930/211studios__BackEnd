@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Business.Abstract;
 using Entities.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,11 +19,13 @@ namespace _211_Studios.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ILoggerManager _loggerManager;
+        private readonly IBannerService _bannerService;
 
-        public ContactController(IMapper mapper, ILoggerManager loggerManager)
+        public ContactController(IMapper mapper, ILoggerManager loggerManager, IBannerService bannerService)
         {
             _mapper = mapper;
             _loggerManager = loggerManager;
+            _bannerService = bannerService;
         }
 
         [HttpPost("sendEmail")]
@@ -57,6 +60,26 @@ namespace _211_Studios.Controllers
             catch (Exception e)
             {
                 _loggerManager.LogError($"Something went wrong in the {nameof(SendEmail)} action {e}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpGet("getContactBanner")]
+        public async Task<IActionResult> GetContactBanner()
+        {
+            try
+            {
+                var banner = await _bannerService.GetBannerAsync("contact");
+                if (banner is null)
+                    return NotFound();
+
+                var bannerDto = _mapper.Map<BannerDto>(banner);
+
+                return Ok(bannerDto);
+            }
+            catch (Exception e)
+            {
+                _loggerManager.LogError($"Something went wrong in the {nameof(GetContactBanner)} action {e}");
                 return StatusCode(500, "Internal server error");
             }
         }

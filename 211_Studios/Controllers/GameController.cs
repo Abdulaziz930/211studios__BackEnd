@@ -20,13 +20,16 @@ namespace _211_Studios.Controllers
         private readonly IMapper _mapper;
         private readonly ILoggerManager _loggerManager;
         private readonly ICategoryService _categoryService;
+        private readonly IBannerService _bannerService;
 
-        public GameController(IGameService gameService, IMapper mapper, ILoggerManager loggerManager, ICategoryService categoryService)
+        public GameController(IGameService gameService, IMapper mapper
+            , ILoggerManager loggerManager, ICategoryService categoryService, IBannerService bannerService)
         {
             _gameService = gameService;
             _mapper = mapper;
             _loggerManager = loggerManager;
             _categoryService = categoryService;
+            _bannerService = bannerService;
         }
 
         [HttpGet("getGames/{skipCount}/{takeCount}")]
@@ -239,6 +242,26 @@ namespace _211_Studios.Controllers
             catch (Exception e)
             {
                 _loggerManager.LogError($"Something went wrong in the {nameof(GetGamesCount)} action {e}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpGet("getGameBanner")]
+        public async Task<IActionResult> GetGameBanner()
+        {
+            try
+            {
+                var banner = await _bannerService.GetBannerAsync("our games");
+                if (banner is null)
+                    return NotFound();
+
+                var bannerDto = _mapper.Map<BannerDto>(banner);
+
+                return Ok(bannerDto);
+            }
+            catch (Exception e)
+            {
+                _loggerManager.LogError($"Something went wrong in the {nameof(GetGameBanner)} action {e}");
                 return StatusCode(500, "Internal server error");
             }
         }

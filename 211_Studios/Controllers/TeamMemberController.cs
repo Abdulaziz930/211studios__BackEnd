@@ -19,17 +19,17 @@ namespace _211_Studios.Controllers
     public class TeamMemberController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;
-        private readonly ITeamMemberBannerService _teamMemberBannerService;
         private readonly IMapper _mapper;
         private readonly ILoggerManager _loggerManager;
+        private readonly IBannerService _bannerService;
 
         public TeamMemberController(UserManager<AppUser> userManager, IMapper mapper
-            , ILoggerManager loggerManager, ITeamMemberBannerService teamMemberBannerService)
+            , ILoggerManager loggerManager, IBannerService bannerService)
         {
             _userManager = userManager;
             _mapper = mapper;
             _loggerManager = loggerManager;
-            _teamMemberBannerService = teamMemberBannerService;
+            _bannerService = bannerService;
         }
 
         [HttpGet("getTeamMembers")]
@@ -88,22 +88,22 @@ namespace _211_Studios.Controllers
             }
         }
 
-        [HttpGet("getTeamMemberDetailBanner")]
-        public async Task<IActionResult> GetTeamMemberDetailBanner()
+        [HttpGet("getTeamMemberBanner")]
+        public async Task<IActionResult> GetTeamMemberBanner()
         {
             try
             {
-                var teamMemberBanners = await _teamMemberBannerService.GetTeamMembersAsync();
-                if (teamMemberBanners is null)
+                var banner = await _bannerService.GetBannerAsync("team member detail");
+                if (banner is null)
                     return NotFound();
 
-                var teamMemberBannerDto = _mapper.Map<TeamMemberBannerDto>(teamMemberBanners[0]);
+                var bannerDto = _mapper.Map<BannerDto>(banner);
 
-                return Ok(teamMemberBannerDto);
+                return Ok(bannerDto);
             }
             catch (Exception e)
             {
-                _loggerManager.LogError($"Something went wrong in the {nameof(GetTeamMemberDetailBanner)} action {e}");
+                _loggerManager.LogError($"Something went wrong in the {nameof(GetTeamMemberBanner)} action {e}");
                 return StatusCode(500, "Internal server error");
             }
         }
