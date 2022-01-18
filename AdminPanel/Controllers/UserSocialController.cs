@@ -1,6 +1,8 @@
 ﻿using AdminPanel.ViewModels;
 using Business.Abstract;
+using DataAccess.Identity;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace AdminPanel.Controllers
 {
+    [Authorize(Roles = RoleConstants.AdminRole + "," + RoleConstants.ModeratorRole)]
     public class UserSocialController : Controller
     {
         private readonly IUserSocialService _userSocial;

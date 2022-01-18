@@ -1,6 +1,8 @@
 ﻿using AdminPanel.ViewModels;
 using Business.Abstract;
+using DataAccess.Identity;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,6 +15,7 @@ using static Utils.CommonEnums;
 
 namespace AdminPanel.Controllers
 {
+    [Authorize(Roles = RoleConstants.AdminRole + "," + RoleConstants.ModeratorRole)]
     public class BlogController : Controller
     {
         private readonly IBlogService _blogService;

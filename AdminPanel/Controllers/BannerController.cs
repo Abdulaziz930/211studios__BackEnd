@@ -1,6 +1,8 @@
 ﻿using AdminPanel.ViewModels;
 using Business.Abstract;
+using DataAccess.Identity;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,6 +13,7 @@ using static Utils.CommonEnums;
 
 namespace AdminPanel.Controllers
 {
+    [Authorize(Roles = RoleConstants.AdminRole + "," + RoleConstants.ModeratorRole)]
     public class BannerController : Controller
     {
         private readonly IBannerService _bannerService;
@@ -41,6 +44,8 @@ namespace AdminPanel.Controllers
 
             return View(bannersVM);
         }
+
+        #region Update
 
         public async Task<IActionResult> Update(int? id)
         {
@@ -110,6 +115,10 @@ namespace AdminPanel.Controllers
             return RedirectToAction("Index");
         }
 
+        #endregion
+
+        #region Detail
+
         public async Task<IActionResult> Detail(int? id)
         {
             if (id is null)
@@ -131,5 +140,7 @@ namespace AdminPanel.Controllers
 
             return View(bannerVM);
         }
+
+        #endregion
     }
 }
