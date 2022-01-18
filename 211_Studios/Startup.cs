@@ -110,6 +110,11 @@ namespace _211_Studios
 
             Constants.ClientPort = Configuration["ClientPort:Port"];
 
+            Constants.ApiKey = Configuration["FireBase:ApiKey"];
+            Constants.Bucket = Configuration["FireBase:Bucket"];
+            Constants.AuthEmail = Configuration["FireBase:AuthEmail"];
+            Constants.AuthPassword = Configuration["FireBase:AuthPassword"];
+
             #endregion
 
             #region Swagger

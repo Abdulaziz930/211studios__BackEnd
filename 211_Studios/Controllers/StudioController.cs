@@ -16,14 +16,16 @@ namespace _211_Studios.Controllers
     public class StudioController : ControllerBase
     {
         private readonly IStudioService _studioService;
+        private readonly IBannerService _bannerService;
         private readonly IMapper _mapper;
         private readonly ILoggerManager _loggerManager;
 
-        public StudioController(IStudioService studioService, IMapper mapper, ILoggerManager loggerManager)
+        public StudioController(IStudioService studioService, IMapper mapper, ILoggerManager loggerManager, IBannerService bannerService)
         {
             _studioService = studioService;
             _mapper = mapper;
             _loggerManager = loggerManager;
+            _bannerService = bannerService;
         }
 
         [HttpGet("getStudio")]
@@ -35,7 +37,20 @@ namespace _211_Studios.Controllers
                 if (studio is null)
                     return NotFound();
 
-                var studioDto = _mapper.Map<StudioPageDto>(studio);
+                var banner = await _bannerService.GetBannerAsync("our studios");
+                if (banner is null)
+                    return NotFound();
+
+                var studioDto = new StudioPageDto
+                {
+                    Id = studio.Id,
+                    Title = studio.Title,
+                    Description = studio.Description,
+                    Image = studio.Image,
+                    BannerTitle = banner.Title,
+                    BannerDescription = banner.Description,
+                    BannerImage = banner.Image
+                };
 
                 return Ok(studioDto);
             }

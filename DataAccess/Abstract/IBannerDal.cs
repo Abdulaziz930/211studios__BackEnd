@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Abstract
 {
-    public interface ITeamMemberBannerDal : IRepository<TeamMemberBanner>
+    public interface IBannerDal : IRepository<Banner>
     {
+        Task<Banner> GetBannerAsync(string pageName);
     }
 }

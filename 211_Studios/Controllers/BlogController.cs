@@ -17,14 +17,16 @@ namespace _211_Studios.Controllers
     public class BlogController : ControllerBase
     {
         private readonly IBlogService _blogService;
+        private readonly IBannerService _bannerService;
         private readonly IMapper _mapper;
         private readonly ILoggerManager _loggerManager;
 
-        public BlogController(IBlogService blogService, IMapper mapper, ILoggerManager loggerManager)
+        public BlogController(IBlogService blogService, IMapper mapper, ILoggerManager loggerManager, IBannerService bannerService)
         {
             _blogService = blogService;
             _mapper = mapper;
             _loggerManager = loggerManager;
+            _bannerService = bannerService;
         }
 
         [HttpGet("getBlogs/{skipCount}/{takeCount}")]
@@ -189,6 +191,26 @@ namespace _211_Studios.Controllers
                 return StatusCode(500, "Internal server error");
             }
             
+        }
+
+        [HttpGet("getBlogBanner")]
+        public async Task<IActionResult> GetBlogBanner()
+        {
+            try
+            {
+                var banner = await _bannerService.GetBannerAsync("blog");
+                if (banner is null)
+                    return NotFound();
+
+                var bannerDto = _mapper.Map<BannerDto>(banner);
+
+                return Ok(bannerDto);
+            }
+            catch (Exception e)
+            {
+                _loggerManager.LogError($"Something went wrong in the {nameof(GetBlogBanner)} action {e}");
+                return StatusCode(500, "Internal server error");
+            }
         }
 
     }
