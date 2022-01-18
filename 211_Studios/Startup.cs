@@ -1,3 +1,4 @@
+using AspNetCoreRateLimit;
 using Business.Abstract;
 using Business.Concret;
 using Common;
@@ -89,6 +90,17 @@ namespace _211_Studios
 
             #endregion
 
+            #region Rate Limiting
+
+            services.AddOptions();
+            services.AddMemoryCache();
+            services.Configure<IpRateLimitOptions>(Configuration.GetSection("IpRateLimit"));
+            services.AddInMemoryRateLimiting();
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+            services.AddHttpContextAccessor();
+
+            #endregion
+
             #region Logger
 
             services.ConfigureLoggerService();
@@ -129,12 +141,48 @@ namespace _211_Studios
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseIpRateLimiting();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "_211_Studios v1"));
             }
+            else
+            {
+                #region Security Headers
+
+                app.UseHsts(hsts => hsts.MaxAge(365).IncludeSubdomains());
+                app.UseXContentTypeOptions();
+                app.UseReferrerPolicy(opts => opts.NoReferrer());
+                app.UseXXssProtection(options => options.EnabledWithBlockMode());
+                app.UseXfo(options => options.Deny());
+                app.UseCsp(opts => opts
+                    .BlockAllMixedContent()
+                    .StyleSources(s => s.Self())
+                    .StyleSources(s => s.UnsafeInline())
+                    .FontSources(s => s.Self())
+                    .FormActions(s => s.Self())
+                    .FrameAncestors(s => s.Self())
+                    .ImageSources(imageSrc => imageSrc.Self())
+                    .ImageSources(imageSrc => imageSrc.CustomSources("data:"))
+                    .ScriptSources(s => s.Self())
+                );
+                app.UseRedirectValidation();
+                app.Use(async (context, next) =>
+                {
+                    if (!context.Response.Headers.ContainsKey("Feature-Policy"))
+                    {
+                        context.Response.Headers.Add("Feature-Policy", "accelerometer 'none'; camera 'none'; microphone 'none';");
+                    }
+                    await next();
+                });
+
+                #endregion
+            }
+
+            #region Middleware
 
             app.UseHttpsRedirection();
 
@@ -145,6 +193,8 @@ namespace _211_Studios
             app.UseAuthorization();
 
             app.UseCors("AllowOrigin");
+
+            #endregion
 
             app.UseEndpoints(endpoints =>
             {
