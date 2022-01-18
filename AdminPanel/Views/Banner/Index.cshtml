@@ -1,0 +1,52 @@
+﻿@model List<BannerViewModel>
+@{
+    ViewData["Title"] = "Banners";
+}
+
+<div class="section-header">
+    <h1>Banners</h1>
+</div>
+<div class="section-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    @if (Model.Count == 0 || Model == null)
+                    {
+                        <div class="alert alert-warning">There are no game yet, please add game</div>
+                    }
+                    else
+                    {
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Image</th>
+                                    <th scope="col">Title</th>
+                                    <th scope="col">Page Name</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var banner in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <img src="~/images/@banner.Image" class="img-fluid rounded-circle mt-3" style="width: 100px; height: 100px;" />
+                                        </td>
+                                        <td>@banner.Title</td>
+                                        <td>@banner.PageName</td>
+                                        <td>
+                                            <a asp-action="Detail" asp-route-id="@banner.Id" class="btn btn-success">Detail</a>
+                                            <a asp-action="Update" asp-route-id="@banner.Id" class="btn btn-warning">Update</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

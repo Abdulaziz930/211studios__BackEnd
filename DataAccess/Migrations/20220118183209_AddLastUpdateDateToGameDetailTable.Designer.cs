@@ -4,14 +4,16 @@ using DataAccess.Concret;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220118183209_AddLastUpdateDateToGameDetailTable")]
+    partial class AddLastUpdateDateToGameDetailTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,9 +122,6 @@ namespace DataAccess.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
-
-                    b.Property<DateTime>("LastModificationDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("MenuId")
                         .HasColumnType("int");
@@ -289,7 +288,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("LastModificationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("LastUpdateDate")
+                    b.Property<DateTime>("LastUpdateDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("RelaseDate")
