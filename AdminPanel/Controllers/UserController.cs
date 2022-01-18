@@ -2,6 +2,7 @@
 using Business.Abstract;
 using DataAccess.Identity;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,7 @@ namespace AdminPanel.Controllers
             _signInManager = signInManager;
         }
 
+        [Authorize(Roles = RoleConstants.AdminRole + "," + RoleConstants.ModeratorRole)]
         public async Task<IActionResult> Index(int page = 1)
         {
             var allUsers = await _userManager.Users.ToListAsync();
@@ -60,6 +62,7 @@ namespace AdminPanel.Controllers
 
         #region Create
 
+        [Authorize(Roles = RoleConstants.AdminRole)]
         public IActionResult Create()
         {
             return View();
@@ -125,6 +128,7 @@ namespace AdminPanel.Controllers
 
         #region Update
 
+        [Authorize(Roles = RoleConstants.AdminRole + "," + RoleConstants.ModeratorRole)]
         public async Task<IActionResult> Update(string id)
         {
             if (id is null)
@@ -198,6 +202,7 @@ namespace AdminPanel.Controllers
 
         #region ChangePassword
 
+        [Authorize(Roles = RoleConstants.AdminRole + "," + RoleConstants.ModeratorRole)]
         public async Task<IActionResult> ChangePassword(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -259,6 +264,7 @@ namespace AdminPanel.Controllers
 
         #region ChangeRole
 
+        [Authorize(Roles = RoleConstants.AdminRole)]
         public async Task<IActionResult> ChangeRole(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -329,6 +335,7 @@ namespace AdminPanel.Controllers
 
         #region Activity
 
+        [Authorize(Roles = RoleConstants.AdminRole)]
         public async Task<IActionResult> Activity(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -356,6 +363,7 @@ namespace AdminPanel.Controllers
 
         #region Detail
 
+        [Authorize(Roles = RoleConstants.AdminRole + "," + RoleConstants.ModeratorRole)]
         public async Task<IActionResult> Detail(string id)
         {
             if (string.IsNullOrEmpty(id))
