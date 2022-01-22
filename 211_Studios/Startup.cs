@@ -118,7 +118,8 @@ namespace _211_Studios
 
             Constants.EmailAdress = Configuration["Gmail:Address"];
             Constants.EmailPassword = Configuration["Gmail:Password"];
-            Constants.ContactEmailFolderPath = Configuration["Gmail:FolderPath"];
+            Constants.ContactEmailFolderPath = Path.Combine(_environment.WebRootPath, "templates"
+                , Configuration["Gmail:FileName"]);
 
             Constants.ClientPort = Configuration["ClientPort:Port"];
 

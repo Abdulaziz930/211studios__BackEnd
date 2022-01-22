@@ -81,7 +81,8 @@ namespace AdminPanel
 
             Constants.EmailAdress = Configuration["Gmail:Address"];
             Constants.EmailPassword = Configuration["Gmail:Password"];
-            Constants.EmailFolderPath = Configuration["Gmail:FolderPath"];
+            Constants.EmailFolderPath = Path.Combine(_environment.WebRootPath, "templates"
+                , Configuration["Gmail:FileName"]);
 
             Constants.AdminClientPort = Configuration["ClientPort:Port"];
 
