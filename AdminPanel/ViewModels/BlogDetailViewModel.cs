@@ -15,6 +15,8 @@ namespace AdminPanel.ViewModels
 
         public string Image { get; set; }
 
+        public string AuthorName { get; set; }
+
         public DateTime CreationDate { get; set; }
 
         public DateTime LastModificationDate { get; set; }

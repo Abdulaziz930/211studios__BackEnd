@@ -42,7 +42,17 @@ namespace AdminPanel.Controllers
             if (user is null)
                 return NotFound();
 
-            var blogs = await _blogService.GetBlogsAsync(user.Id, skipCount, 5);
+            List<Blog> blogs;
+
+            if (User.IsInRole(RoleConstants.AdminRole))
+            {
+                blogs = await _blogService.GetBlogsAsync(skipCount, 5);
+            }
+            else
+            {
+                blogs = await _blogService.GetBlogsAsync(user.Id, skipCount, 5);
+            }
+
             if (blogs is null)
                 return NotFound();
 
@@ -129,10 +139,10 @@ namespace AdminPanel.Controllers
                 return NotFound();
 
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            if(user is null)
+            if (user is null)
                 return NotFound();
 
-            if (blog.AppUser.Id != user.Id)
+            if (!User.IsInRole(RoleConstants.AdminRole) && blog.AppUser.Id != user.Id)
                 return BadRequest();
 
             var blogVM = new UpdateBlogViewModel
@@ -161,7 +171,7 @@ namespace AdminPanel.Controllers
             if (user is null)
                 return NotFound();
 
-            if (user.Id != dbBlog.AppUser.Id)
+            if (!User.IsInRole(RoleConstants.AdminRole) && user.Id != dbBlog.AppUser.Id)
                 return BadRequest();
 
             var imageFileName = dbBlog.Image;
@@ -215,7 +225,7 @@ namespace AdminPanel.Controllers
             if (user is null)
                 return NotFound();
 
-            if (blog.AppUser.Id != user.Id)
+            if (!User.IsInRole(RoleConstants.AdminRole) && blog.AppUser.Id != user.Id)
                 return BadRequest();
 
             var blogDetailVM = new BlogDetailViewModel
@@ -247,7 +257,7 @@ namespace AdminPanel.Controllers
             if (user is null)
                 return NotFound();
 
-            if (blog.AppUser.Id != user.Id)
+            if (!User.IsInRole(RoleConstants.AdminRole) && blog.AppUser.Id != user.Id)
                 return BadRequest();
 
             blog.IsDeleted = true;
@@ -276,7 +286,7 @@ namespace AdminPanel.Controllers
             if (user is null)
                 return NotFound();
 
-            if (blog.AppUser.Id != user.Id)
+            if (!User.IsInRole(RoleConstants.AdminRole) && blog.AppUser.Id != user.Id)
                 return BadRequest();
 
             var blogDetailVM = new BlogDetailViewModel
@@ -285,6 +295,7 @@ namespace AdminPanel.Controllers
                 Title = blog.Title,
                 Content = blog.Content,
                 Image = blog.Image,
+                AuthorName = blog.AppUser.FullName,
                 CreationDate = blog.CreationDate,
                 LastModificationDate = blog.LastModificationDate
             };

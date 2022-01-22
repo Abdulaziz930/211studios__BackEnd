@@ -37,7 +37,7 @@ namespace _211_Studios.Controllers
         {
             try
             {
-                var teamMembers = await _userManager.Users.ToListAsync();
+                var teamMembers = await _userManager.Users.Where(x => x.UserName != "Admin").ToListAsync();
                 if (teamMembers is null)
                     return NotFound();
 
@@ -60,7 +60,7 @@ namespace _211_Studios.Controllers
                 if (teamMemberId is null)
                     return BadRequest();
 
-                var teamMember = await _userManager.Users.Include(x => x.UserSocialMedias)
+                var teamMember = await _userManager.Users.Where(x => x.UserName != "Admin").Include(x => x.UserSocialMedias)
                     .FirstOrDefaultAsync(x => x.Id == teamMemberId);
                 if (teamMember is null)
                     return NotFound();
