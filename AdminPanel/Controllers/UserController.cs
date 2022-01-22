@@ -41,7 +41,7 @@ namespace AdminPanel.Controllers
 
             var users = new List<UserViewModel>();
 
-            foreach (var user in _userManager.Users.Skip(skipCount).Take(5))
+            foreach (var user in _userManager.Users.Where(x => x.UserName != "Admin").Skip(skipCount).Take(5))
             {
                 var userVM = new UserViewModel
                 {
